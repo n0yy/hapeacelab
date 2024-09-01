@@ -1,0 +1,6 @@
+Detail Page for:
+1. Rangkumin: Quickly distill the essential points from any article or paper. Rangkumin simplifies the process of summarizing long-form content, making it ideal for students, researchers, and professionals who need concise, clear summaries in seconds.
+2. Listingin: Effortlessly generate product descriptions by simply uploading an image. Listingin streamlines the process for online sellers, making it easy to create compelling and accurate product descriptions in seconds.
+3. Voice Summarizer: ransform spoken content into concise summaries. Voice Summarizer converts audio recordings into clear, digestible summaries, saving you time while capturing the essence of the conversation.
+4. YouTube Summarizer: Extract key insights from any YouTube video. YouTube Summarizer creates brief, accurate summaries, making it easy to grasp the main points without watching the entire video.
+5. Lecturer Summarizer: Simplify lecture content into essential takeaways. Lecturer Summarizer condenses academic lectures into clear summaries, perfect for students who need quick and efficient study aids.
