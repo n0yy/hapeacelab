@@ -1,58 +1,29 @@
 "use client";
 
+import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
-import Image from "next/image";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const { data: session } = useSession();
   return (
     <>
       <main>
-        <nav
-          className={`fixed top-0 py-4 w-full z-40 flex items-center justify-between lg:justify-evenly px-10 lg:px-0 transition-all duration-300 ${
-            isScrolled
-              ? "bg-primary bg-opacity-25 backdrop-blur-md"
-              : "bg-transparent"
-          }`}
-        >
-          <Image
-            src="/logo.png"
-            width={82}
-            height={40}
-            alt="Logo Hapeace Lab"
-            className="scale-90 md:scale-100"
-          />
-          <div className="space-x-8 text-slat-600 font-light hidden lg:block">
-            <Link href="/">Home</Link>
-            <Link href="#services">Services</Link>
-            <Link href="#pricing">Pricing</Link>
-          </div>
-          <button className="border border-slate-800 px-8 py-1.5 rounded-md font-medium scale-90 hover:bg-black hover:text-white transition-all duration-200">
-            Login
-          </button>
-        </nav>
+        <Navbar />
         <section
           className="relative min-h-screen flex items-center justify-center"
           id="heroes"
         >
           <div className="relative text-center max-w-3xl mx-auto">
+            {session && session.user && (
+              <p className="text-slate-500 mb-4 text-xl">
+                Hi{" "}
+                <span className="text-slate-800 underline">
+                  {session?.user.name?.split(" ")[0]}
+                </span>
+                , how can we help you?
+              </p>
+            )}
             <h1 className="text-4xl font-bold mb-2 text-slate-900 px-5 md:px-0">
               AI-Powered Tools to Simplify Your Work.
             </h1>
@@ -83,7 +54,7 @@ export default function Home() {
             <Services
               urlIcon="/rangkumin.png"
               title="CondenseIt"
-              desc="Summarize articles and papers instantly, providing clear and concise insights in just seconds."
+              desc="Summarize papers instantly, providing clear and concise insights in just seconds."
               url="/services/condense-it"
             />
             <Services

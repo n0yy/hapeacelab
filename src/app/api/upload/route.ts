@@ -23,9 +23,7 @@ export async function POST(request: NextRequest) {
     const filePath = join(uploadsDir, fileName);
 
     await writeFile(filePath, buffer);
-    console.log(`File saved at: ${filePath}`);
     const content = await condenseIt(filePath);
-    console.log(content);
 
     await unlink(filePath);
     return NextResponse.json({ success: true, text: content });

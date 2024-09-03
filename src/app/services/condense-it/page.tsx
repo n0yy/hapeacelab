@@ -3,9 +3,13 @@
 import { useState } from "react";
 import GeneratedCard from "@/components/GeneratedCard";
 
+interface Content {
+  text: string;
+}
+
 export default function CondenseIt() {
   const [file, setFile] = useState<File>();
-  const [content, setContent] = useState<object>({});
+  const [content, setContent] = useState<Content | null>(null);
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,10 +47,10 @@ export default function CondenseIt() {
       <main className="min-h-screen max-w-3xl mx-10 md:mx-auto mt-20 md:mt-32">
         <h1 className="text-3xl font-semibold underline mb-2">CondenseIt</h1>
         <p>
-          Quickly distill the essential points from any article or paper.
-          CondenseIt simplifies the process of summarizing long-form content,
-          making it ideal for students, researchers, and professionals who need
-          concise, clear summaries in seconds.
+          Quickly distill the essential points from any paper. CondenseIt
+          simplifies the process of summarizing long-form content, making it
+          ideal for students, researchers, and professionals who need concise,
+          clear summaries in seconds.
         </p>
 
         <form
@@ -98,8 +102,8 @@ export default function CondenseIt() {
           />
         </form>
       </main>
-      {loadingContent && <div className="text-center">Loading ...</div>}
-      <GeneratedCard markdown={content?.text} />
+      {loadingContent && <div className="text-center mb-10">Loading ...</div>}
+      {content && <GeneratedCard markdown={content?.text} />}
     </>
   );
 }
