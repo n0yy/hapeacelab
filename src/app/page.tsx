@@ -1,8 +1,10 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
+import Pricing from "@/components/Pricing";
 import Services from "@/components/Services";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -16,12 +18,12 @@ export default function Home() {
         >
           <div className="relative text-center max-w-3xl mx-auto">
             {session && session.user && (
-              <p className="text-slate-500 mb-4 text-xl">
+              <p className="text-slate-500 mb-4 text-lg">
                 Hi{" "}
                 <span className="text-slate-800 underline">
                   {session?.user.name?.split(" ")[0]}
                 </span>
-                , how can we help you?
+                ✌️ how can we help you?
               </p>
             )}
             <h1 className="text-4xl font-bold mb-2 text-slate-900 px-5 md:px-0">
@@ -33,9 +35,14 @@ export default function Home() {
               YouTube videos, and much more. Let us handle the heavy lifting, so
               you can focus on what matters most.
             </p>
-            <button className="bg-primary shadow-neo px-8 py-2 rounded-md font-medium">
-              Try it Now!
-            </button>
+            {!session && (
+              <Link
+                href="/login"
+                className="bg-primary shadow-neo px-8 py-2 rounded-md font-medium cursor-pointer"
+              >
+                Try it Now!
+              </Link>
+            )}
           </div>
         </section>
 
@@ -97,6 +104,60 @@ export default function Home() {
           </div>
         </section>
         {/* End Services */}
+
+        {/* Pricing */}
+        <section id="pricing" className="mt-32 mx-10 md:mx-56">
+          <header className="mb-10 text-center">
+            <h3 className="text-2xl font-semibold ">
+              Choose a plan that’s right for you
+            </h3>
+            <h4 className="text-sm md:text-base">
+              Try our free plan to get 350 point. Switch plan if you want more
+              point.
+            </h4>
+          </header>
+          <div className="flex flex-wrap justify-center gap-10">
+            <Pricing
+              title="Free"
+              list={[
+                "Lorem ipsum dolor sit amet consectetur.",
+                "Sollicitudin gravida tellus id nullam cum.",
+                "Potensionality",
+                "Get 350 point when you registered.",
+              ]}
+              price="Start free trial"
+            />
+            <Pricing
+              title="Lower"
+              list={[
+                "Lorem ipsum dolor sit amet consectetur.",
+                "Sollicitudin gravida tellus id nullam cum.",
+                "Potensionality",
+                "Get 550 point",
+                "Speech-to-Text",
+                "CondenseIt",
+              ]}
+              price="Rp 25.999"
+            />
+            <Pricing
+              title="Upper"
+              list={[
+                "Lorem ipsum dolor sit amet consectetur.",
+                "Sollicitudin gravida tellus id nullam cum.",
+                "Get 1150 points",
+                "All Services",
+              ]}
+              price="Rp 49.500"
+            />
+          </div>
+        </section>
+        {/* End Pricing */}
+
+        {/* Footer */}
+        <footer className="mt-40 mb-5 text-xs text-center text-slate-600">
+          @ 2024 Hapeacelab | All right reserved
+        </footer>
+        {/* End Footer */}
       </main>
     </>
   );

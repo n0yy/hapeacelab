@@ -14,13 +14,14 @@ export default async function condenseIt(filePath: string) {
       },
     },
     {
-      text: `Let's think step-by-step. Buatkan rangkuman dari file tersebut disertai pernyataan tesis. Tambahkan keywords dan key insights jika memungkinkan. Jika file berhubungan dengan ilmu matematika atau bidang yang berkaitan dengan hitung-hitungan, tambahkan rumus yang ada di file tersebut ke dalam rangkuman (latex), tambahkan pula penjelasan rumusnya. Tambahkan Emoji untuk setiap keywords dan key insights. generate dalam bahasa Indonesia dan gunakan gaya bahasa yang mudah dimengerti. 
+      text: `Let's think step-by-step. Buatkan rangkuman dari file tersebut disertai pernyataan tesis. Tambahkan keywords dan key insights jika memungkinkan. Tambahkan Emoji untuk setiap keywords dan key insights. generate dalam bahasa Indonesia dan gunakan gaya bahasa yang mudah dimengerti.
     Output:
     - Judul (Gunakan judul asli)
     - Rangkuman
     - Keywords (jika keywords berbahasa inggris gunakan langsung jangan gunakan bahasa lain.)
     - Key Insights (jika keywords berbahasa inggris gunakan langsung jangan gunakan bahasa lain.)
-    - Similar Articles or Paper (berisi artikel atau paper yang mirip dengan file tambahkan pula link url agar bisa dikunjungi.)
+    - Similar Articles or Paper (berisi artikel atau paper yang mirip dengan file)
+
     `,
     },
   ]);

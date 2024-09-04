@@ -1,21 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GeneratedCard from "@/components/GeneratedCard";
+import { getUser, updatePoints } from "@/lib/services/firebase/users";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface Content {
   text: string;
 }
 
+interface User {
+  fullName: string;
+  email: string;
+  type: string;
+  points: number;
+  createdAt: Date;
+}
+
 export default function CondenseIt() {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [file, setFile] = useState<File>();
   const [content, setContent] = useState<Content | null>(null);
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
 
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (session?.user?.email) {
+        const user: User | null = (await getUser(
+          session.user.email as string
+        )) as User | null;
+        setUser(user);
+      }
+    }
+
+    fetchData();
+  }, [session, user]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+
     try {
+      setContent(null);
       if (!file) {
         throw new Error("No file uploaded");
       }
@@ -38,6 +72,7 @@ export default function CondenseIt() {
       console.error(error);
     } finally {
       setLoadingContent(false);
+      await updatePoints(session?.user?.email as string, 30);
     }
   };
 
@@ -82,21 +117,24 @@ export default function CondenseIt() {
                 and drop
               </p>
               <p className="text-xs text-gray-700">
-                {file ? file.name : "PDF, DOCX Only"}
+                {file ? file.name : "PDF Only"}
               </p>
             </div>
             <input
               id="dropzone-file"
               name="file"
               type="file"
-              accept=".pdf,.docx"
+              accept=".pdf"
               className="hidden"
               required
               onChange={(e) => setFile(e.target.files?.[0])}
             />
           </label>
+          <span className="text-sm text-slate-600 mt-2">
+            You need 30 point to do it!
+          </span>
           <input
-            className="block w-40 mx-auto py-2 bg-slate-800 text-white rounded mt-5 hover:bg-primary hover:border border-slate-700 hover:text-slate-700 transition-all duration-200"
+            className="block w-40 mx-auto py-2 bg-slate-800 text-white rounded mt-3 hover:bg-primary hover:border border-slate-700 hover:text-slate-700 transition-all duration-200"
             type="submit"
             value="Go!"
           />
