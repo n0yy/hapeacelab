@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import GeneratedCard from "@/components/GeneratedCard";
-import { getUser, updatePoints } from "@/lib/services/firebase/users";
+import { useState } from "react";
+import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-interface Content {
-  text: string;
-}
+import GeneratedCard from "@/components/GeneratedCard";
+import { updatePoints } from "@/lib/services/firebase/users";
+import UploadFile from "@/components/UploadFile";
+import AlertPoints from "@/components/AlertPoints";
 
 interface User {
   fullName: string;
@@ -18,27 +17,24 @@ interface User {
   createdAt: Date;
 }
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function CondenseIt() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [file, setFile] = useState<File>();
-  const [content, setContent] = useState<Content | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [content, setContent] = useState<string | null>(null);
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      if (session?.user?.email) {
-        const user: User | null = (await getUser(
-          session.user.email as string
-        )) as User | null;
-        setUser(user);
-      }
-    }
-
-    fetchData();
-  }, [session, user]);
+  const {
+    data: user,
+    error,
+    mutate,
+  } = useSWR<User | null>(
+    session?.user?.email ? `/api/users/${session.user.email}` : null,
+    fetcher
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,33 +44,56 @@ export default function CondenseIt() {
       return;
     }
 
+    if (!file) {
+      alert("No File Uploaded");
+      return;
+    }
+
+    if (user && user.points < 30) {
+      setShowAlert(true);
+      return;
+    }
+
     try {
       setContent(null);
-      if (!file) {
-        throw new Error("No file uploaded");
-      }
+      setLoadingContent(true);
+      window.scrollTo({ top: 200, behavior: "smooth" });
 
       const data = new FormData();
       data.set("file", file);
 
-      setLoadingContent(true);
-      const res = await fetch("/api/upload", {
+      const res = await fetch("/api/condense-it", {
         method: "POST",
         body: data,
       });
 
       if (!res.ok) {
         throw new Error("Failed to upload file");
-      } else {
-        setContent(await res.json());
+      }
+
+      const jsonResponse = await res.json();
+      setContent(jsonResponse);
+
+      // Update points only if successful
+      if (session.user?.email) {
+        await updatePoints(session.user.email, 30);
+        // Update local user data to reflect point change
+        mutate(
+          (prevUser) =>
+            prevUser ? { ...prevUser, points: prevUser.points - 30 } : null,
+          false
+        );
       }
     } catch (error: any) {
       console.error(error);
+      alert("An error occurred. Please try again.");
     } finally {
       setLoadingContent(false);
-      await updatePoints(session?.user?.email as string, 30);
     }
   };
+
+  if (error) return <div>Failed to load user data</div>;
+  if (!user) return <div>Loading...</div>;
 
   return (
     <>
@@ -88,60 +107,18 @@ export default function CondenseIt() {
           clear summaries in seconds.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center justify-center w-full mt-5"
-        >
-          <label
-            htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border-[1px] border-gray-500 rounded-lg cursor-pointer"
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg
-                className="w-8 h-8 mb-4 text-gray-700"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 16"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                />
-              </svg>
-              <p className="mb-2 text-sm text-gray-700">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-700">
-                {file ? file.name : "PDF Only"}
-              </p>
-            </div>
-            <input
-              id="dropzone-file"
-              name="file"
-              type="file"
-              accept=".pdf"
-              className="hidden"
-              required
-              onChange={(e) => setFile(e.target.files?.[0])}
-            />
-          </label>
-          <span className="text-sm text-slate-600 mt-2">
-            You need 30 point to do it!
-          </span>
-          <input
-            className="block w-40 mx-auto py-2 bg-slate-800 text-white rounded mt-3 hover:bg-primary hover:border border-slate-700 hover:text-slate-700 transition-all duration-200"
-            type="submit"
-            value="Go!"
-          />
-        </form>
+        <UploadFile
+          acceptedFile=".pdf"
+          handleSubmit={handleSubmit}
+          file={file}
+          setFile={setFile}
+          needPoints={30}
+          isMultiple={false}
+        />
+        {showAlert && <AlertPoints setShowAlert={setShowAlert} />}
+        {loadingContent && <div className="text-center my-10">Loading ...</div>}
+        {content && <GeneratedCard markdown={content} />}
       </main>
-      {loadingContent && <div className="text-center mb-10">Loading ...</div>}
-      {content && <GeneratedCard markdown={content?.text} />}
     </>
   );
 }

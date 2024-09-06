@@ -68,7 +68,7 @@ export default function Home() {
               urlIcon="/listingin.png"
               title="DescribeIt"
               desc="Create product descriptions instantly from an image, making it effortless for sellers to generate clear content."
-              url="/services/listingin"
+              url="/services/describe-it"
             />
             <Services
               urlIcon="/speech-to-text.png"
@@ -92,7 +92,7 @@ export default function Home() {
               height={32}
               title="LectureBrief"
               desc="Summarize lectures instantly, providing clear and concise insights to help students quickly grasp key points."
-              url="/services/lecturer-docs-summarizer"
+              url="/services/lecturer-brief"
             />
             <Services
               urlIcon="/potensionality.png"
