@@ -136,7 +136,8 @@ export default function DescribeIt() {
           <option value="indonesian">Indonesian</option>
           <option value="korean">Korean</option>
           <option value="japanese">Japanese</option>
-          <option value="Sunda">Sunda</option>
+          <option value="Sundanese">Sunda</option>
+          <option value="Javanese">Wa jawa ettt jawa</option>
         </select>
         <UploadFile
           acceptedFile=".png,.jpeg,.webp,.heic,.heif"

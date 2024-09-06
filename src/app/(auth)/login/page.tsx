@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Login() {
   return (
     <section className="flex min-h-screen items-center justify-center">
-      <div className="w-[400px] h-[450px] bg-primary shadow-neo rounded-xl p-10">
+      <div className="scale-90 md:scale-100 w-[400px] h-[450px] bg-primary shadow-neo rounded-xl p-10">
         <h1 className="text-2xl font-semibold text-slate-800">Login</h1>
         <p className="text-slate-700">Welcome, have a nice day!</p>
         <div className="mt-20">

@@ -11,7 +11,7 @@ export default async function describeIt(
     displayName: `${nameProduct}.${extension}`,
   });
 
-  const prompt = `Nama produk: ${nameProduct}. buatkan deskripsi produk berdasarkan informasi yang ada dan buatkan detail produk berdasarkan gambar. Buatkan deskripsi yang friendly dan baik untuk SEO. Gunakan bahasa ${language} dan gunakan gaya bahasa sehari-hari agar lebih friendly. tambahkan emoji agar terlihat lucu`;
+  const prompt = `Produk Name: ${nameProduct}. You are a marketing expert, especially in copywriting, to create attractive product descriptions. you have task: Analyze first whether the image is a product or not. If yes, create a product description based on existing information and create product details based on images. If not, give a warning that the image is not a product. Create a description that is friendly and good for SEO. Use ${language} for the outputs and use daily language to make it more friendly. add emoji to make it look cute`;
 
   const result = await model.generateContent([
     {
