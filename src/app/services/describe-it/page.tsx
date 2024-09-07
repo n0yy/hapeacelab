@@ -99,7 +99,7 @@ export default function DescribeIt() {
   };
 
   if (error) return <div>Failed to load user data</div>;
-
+  console.log(`Content: ${content}`);
   return (
     <>
       <title>DescribeIt</title>
@@ -150,8 +150,8 @@ export default function DescribeIt() {
         />
         {showAlert && <AlertPoints />}
         {loadingContent && (
-          <div className="text-center my-10">
-            Thinking <EosIconsThreeDotsLoading />
+          <div className="text-center my-10 flex items-center space-x-1">
+            <span>Thinking</span> <EosIconsThreeDotsLoading />
           </div>
         )}
         {content && <GeneratedCard markdown={content} />}

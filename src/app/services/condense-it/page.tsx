@@ -50,7 +50,7 @@ export default function CondenseIt() {
       return;
     }
 
-    if (user?.user?.points < 10) {
+    if (user?.user?.points < 30) {
       console.log(`User ${session?.user?.email} does not have enough points`);
       setShowAlert(true);
       return;
