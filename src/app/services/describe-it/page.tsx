@@ -103,7 +103,7 @@ export default function DescribeIt() {
   return (
     <>
       <title>DescribeIt</title>
-      <main className="min-h-screen max-w-3xl mx-10 md:mx-auto mt-32">
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-32">
         <h1 className="text-3xl font-semibold underline mb-2">DescribeIt</h1>
         <p>
           Effortlessly generate product descriptions by simply uploading an
