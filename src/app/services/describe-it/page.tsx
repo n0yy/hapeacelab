@@ -35,7 +35,9 @@ export default function DescribeIt() {
     error,
     mutate,
   } = useSWR<User | any>(
-    session?.user?.email ? `/api/users/${session.user.email}` : null,
+    session?.user?.email
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/users/${session.user.email}`
+      : null,
     fetcher
   );
 
@@ -103,6 +105,7 @@ export default function DescribeIt() {
 
   if (error) return <div>Failed to load user data</div>;
   console.log(`Content: ${content}`);
+  console.log(`API URL: ${process.env.NEXT_PUBLIC_API_URL}/api/describe-it`);
   return (
     <>
       <title>DescribeIt</title>

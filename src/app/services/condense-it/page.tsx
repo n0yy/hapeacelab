@@ -33,7 +33,9 @@ export default function CondenseIt() {
     error,
     mutate,
   } = useSWR<User | any>(
-    session?.user?.email ? `/api/users/${session.user.email}` : null,
+    session?.user?.email
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/users/${session.user.email}`
+      : null,
     fetcher
   );
 
