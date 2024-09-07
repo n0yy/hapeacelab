@@ -8,6 +8,7 @@ import GeneratedCard from "@/components/GeneratedCard";
 import { updatePoints } from "@/lib/services/firebase/users";
 import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
+import { EosIconsThreeDotsLoading } from "@/components/Loading";
 
 interface User {
   fullName: string;
@@ -31,7 +32,7 @@ export default function CondenseIt() {
     data: user,
     error,
     mutate,
-  } = useSWR<User | null>(
+  } = useSWR<User | any>(
     session?.user?.email ? `/api/users/${session.user.email}` : null,
     fetcher
   );
@@ -49,7 +50,8 @@ export default function CondenseIt() {
       return;
     }
 
-    if (user && user.points < 30) {
+    if (user?.user?.points < 10) {
+      console.log(`User ${session?.user?.email} does not have enough points`);
       setShowAlert(true);
       return;
     }
@@ -79,7 +81,7 @@ export default function CondenseIt() {
         await updatePoints(session.user.email, 30);
         // Update local user data to reflect point change
         mutate(
-          (prevUser) =>
+          (prevUser: User | null) =>
             prevUser ? { ...prevUser, points: prevUser.points - 30 } : null,
           false
         );
@@ -93,7 +95,6 @@ export default function CondenseIt() {
   };
 
   if (error) return <div>Failed to load user data</div>;
-  if (!user) return <div>Loading...</div>;
 
   return (
     <>
@@ -116,7 +117,11 @@ export default function CondenseIt() {
           isMultiple={false}
         />
         {showAlert && <AlertPoints setShowAlert={setShowAlert} />}
-        {loadingContent && <div className="text-center my-10">Loading ...</div>}
+        {loadingContent && (
+          <div className="text-center my-10">
+            Thinking <EosIconsThreeDotsLoading />{" "}
+          </div>
+        )}
         {content && <GeneratedCard markdown={content} />}
       </main>
     </>
