@@ -64,10 +64,13 @@ export default function CondenseIt() {
       const data = new FormData();
       data.set("file", file);
 
-      const res = await fetch("/api/condense-it", {
-        method: "POST",
-        body: data,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/condense-it`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to upload file");

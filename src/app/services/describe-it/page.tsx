@@ -68,10 +68,13 @@ export default function DescribeIt() {
       data.append("name", productName);
       data.append("language", selectedLanguage);
 
-      const res = await fetch("/api/describe-it", {
-        method: "POST",
-        body: data,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/describe-it`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to upload file");
@@ -112,7 +115,7 @@ export default function DescribeIt() {
           seconds.
         </p>
         <h5 className="text-lg mt-3">For best results:</h5>
-        <ul className="list-disc ml-4 text-sm">
+        <ul className="list-disc text-sm">
           <li>Rotate images to the correct orientation before uploading.</li>
           <li>Avoid blurry images.</li>
         </ul>
