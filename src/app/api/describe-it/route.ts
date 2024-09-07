@@ -4,6 +4,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
 
 export async function POST(request: NextRequest) {
+  if (request.method !== "POST") {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Invalid request method",
+      },
+      { status: 405 }
+    );
+  }
+
   const data = await request.formData();
   const file: File | null = data.get("file") as unknown as File;
   const name: string | null = data.get("name") as unknown as string;

@@ -83,6 +83,7 @@ export default function DescribeIt() {
       }
 
       const jsonResponse = await res.json();
+      console.log(`API Response: ${JSON.stringify(jsonResponse)}`);
       setContent(jsonResponse.text);
 
       // Update points only if successful
