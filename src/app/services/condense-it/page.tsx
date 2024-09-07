@@ -74,7 +74,7 @@ export default function CondenseIt() {
       }
 
       const jsonResponse = await res.json();
-      setContent(jsonResponse);
+      setContent(jsonResponse.text);
 
       // Update points only if successful
       if (session.user?.email) {
@@ -116,7 +116,7 @@ export default function CondenseIt() {
           needPoints={30}
           isMultiple={false}
         />
-        {showAlert && <AlertPoints setShowAlert={setShowAlert} />}
+        {showAlert && <AlertPoints />}
         {loadingContent && (
           <div className="text-center my-10">
             Thinking <EosIconsThreeDotsLoading />{" "}

@@ -24,7 +24,7 @@ export default function DescribeIt() {
   const router = useRouter();
   const { data: session } = useSession();
   const [file, setFile] = useState<File>();
-  const [content, setContent] = useState<object | null>(null);
+  const [content, setContent] = useState<string | null>(null);
   const [productName, setProductName] = useState<string>("");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
