@@ -37,6 +37,9 @@ export async function POST(request: NextRequest) {
 
     await writeFile(filePath, buffer);
     const content = await describeIt(filePath, extension, name, language);
+    console.log("DescribeIt Response:", content);
+    console.log("File path:", filePath);
+    await writeFile(filePath, buffer);
 
     await unlink(filePath);
     return NextResponse.json({ success: true, text: content });

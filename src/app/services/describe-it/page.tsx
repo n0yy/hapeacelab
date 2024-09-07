@@ -87,7 +87,7 @@ export default function DescribeIt() {
       setContent(jsonResponse.text);
 
       // Update points only if successful
-      if (session?.user?.email) {
+      if (session?.user?.email && jsonResponse.success) {
         await updatePoints(session.user.email, 10);
         // Update local user data to reflect point change
         mutate(
