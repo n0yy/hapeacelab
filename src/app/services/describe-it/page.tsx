@@ -24,7 +24,7 @@ export default function DescribeIt() {
   const router = useRouter();
   const { data: session } = useSession();
   const [file, setFile] = useState<File>();
-  const [content, setContent] = useState<string | null>(null);
+  const [content, setContent] = useState<object | null>(null);
   const [productName, setProductName] = useState<string>("");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
@@ -78,7 +78,7 @@ export default function DescribeIt() {
       }
 
       const jsonResponse = await res.json();
-      setContent(jsonResponse);
+      setContent(jsonResponse.text);
 
       // Update points only if successful
       if (session?.user?.email) {
