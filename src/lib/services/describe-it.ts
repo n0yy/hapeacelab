@@ -1,29 +1,35 @@
-import { model, fileManager } from "@/utils/genai";
-
 export default async function describeIt(
-  filePath: string,
-  extension: string,
-  nameProduct: string,
+  file: File,
+  productName: string,
   language: string
 ) {
-  const uploadRes = await fileManager.uploadFile(filePath, {
-    mimeType: `image/${extension}`,
-    displayName: `${nameProduct}.${extension}`,
+  // Convert file to base64
+  const fileData = await new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.readAsDataURL(file);
   });
 
-  const prompt = `Produk Name: ${nameProduct}. You are a marketing expert, especially in copywriting, to create attractive product descriptions. you have task: Analyze first whether the image is a product or not. If yes, create a product description based on existing information and create product details based on images. If not, give a warning that the image is not a product. Create a description that is friendly and good for SEO. Use ${language} for the outputs and use daily language to make it more friendly. add emoji to make it look cute`;
+  // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+  const base64Data = fileData.split(",")[1];
 
-  const result = await model.generateContent([
-    {
-      fileData: {
-        mimeType: uploadRes.file.mimeType,
-        fileUri: uploadRes.file.uri,
-      },
+  const response = await fetch("/api/describe-it", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      text: prompt,
-    },
-  ]);
+    body: JSON.stringify({
+      fileData: base64Data,
+      mimeType: file.type,
+      productName,
+      language,
+    }),
+  });
 
-  return result.response.text();
+  if (!response.ok) {
+    throw new Error("Failed to generate description");
+  }
+
+  const data = await response.json();
+  return data.text;
 }

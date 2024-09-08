@@ -1,48 +1,27 @@
-import describeIt from "@/lib/services/describe-it";
-import { writeFile, mkdir, unlink } from "fs/promises";
+import { model } from "@/utils/genai";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
+
+function fileToGenerativePart(base64Data: string, mimeType: string) {
+  return {
+    inlineData: {
+      data: base64Data,
+      mimeType,
+    },
+  };
+}
 
 export async function POST(request: NextRequest) {
-  if (request.method !== "POST") {
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Invalid request method",
-      },
-      { status: 405 }
-    );
-  }
-
-  const data = await request.formData();
-  const file: File | null = data.get("file") as unknown as File;
-  const name: string | null = data.get("name") as unknown as string;
-  const language: string | null = data.get("language") as unknown as string;
-
-  if (!file) {
-    return NextResponse.json({ success: false, error: "No file uploaded" });
-  }
-
   try {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const body = await request.json();
+    const { fileData, mimeType, productName, language } = body;
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
+    const prompt = `Product Name: ${productName}. You are a marketing expert, especially in copywriting, to create attractive product descriptions. Your task: Analyze first whether the image is a product or not. If yes, create a product description based on existing information and create product details based on images. If not, give a warning that the image is not a product. Create a description that is friendly and good for SEO. Use ${language} for the outputs and use daily language to make it more friendly. Add emoji to make it look cute`;
 
-    const fileName = file.name;
-    const extension = fileName.split(".").pop() ?? "";
-    const filePath = join(uploadsDir, fileName);
+    const imagePart = fileToGenerativePart(fileData, mimeType);
 
-    await writeFile(filePath, buffer);
-    const content = await describeIt(filePath, extension, name, language);
-    console.log("DescribeIt Response:", content);
-    console.log("File path:", filePath);
-    await writeFile(filePath, buffer);
-
-    await unlink(filePath);
-    return NextResponse.json({ success: true, text: content });
+    const result = await model.generateContent([prompt, imagePart]);
+    const text = result.response.text();
+    return NextResponse.json({ success: true, text });
   } catch (error) {
     console.error("Error processing file:", error);
     return NextResponse.json({

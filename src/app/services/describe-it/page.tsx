@@ -9,6 +9,7 @@ import { updatePoints } from "@/lib/services/firebase/users";
 import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
+import describeIt from "@/lib/services/describe-it";
 
 interface User {
   fullName: string;
@@ -65,34 +66,17 @@ export default function DescribeIt() {
       setLoadingContent(true);
       window.scrollTo({ top: 200, behavior: "smooth" });
 
-      const data = new FormData();
-      data.append("file", file);
-      data.append("name", productName);
-      data.append("language", selectedLanguage);
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/describe-it`,
-        {
-          method: "POST",
-          body: data,
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to upload file");
-      }
-
-      const jsonResponse = await res.json();
-      console.log(`API Response: ${JSON.stringify(jsonResponse)}`);
-      setContent(jsonResponse.text);
+      // Call describeIt with the file object directly
+      const res = await describeIt(file, productName, selectedLanguage);
+      setContent(res);
 
       // Update points only if successful
-      if (session?.user?.email && jsonResponse.success) {
+      if (session?.user?.email) {
         await updatePoints(session.user.email, 10);
         // Update local user data to reflect point change
         mutate(
           (prevUser: User | null) =>
-            prevUser ? { ...prevUser, points: prevUser.points - 30 } : null,
+            prevUser ? { ...prevUser, points: prevUser.points - 10 } : null,
           false
         );
       }
@@ -106,7 +90,6 @@ export default function DescribeIt() {
 
   if (error) return <div>Failed to load user data</div>;
   console.log(`Content: ${content}`);
-  console.log(`API URL: ${process.env.NEXT_PUBLIC_API_URL}/api/describe-it`);
   return (
     <>
       <title>DescribeIt</title>
