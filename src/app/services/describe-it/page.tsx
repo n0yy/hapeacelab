@@ -89,7 +89,7 @@ export default function DescribeIt() {
   };
 
   if (error) return <div>Failed to load user data</div>;
-  console.log(`Content: ${content}`);
+
   return (
     <>
       <title>DescribeIt</title>

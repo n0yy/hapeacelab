@@ -40,7 +40,7 @@ const authOptions: NextAuthOptions = {
             fullName: data.fullName,
             email: data.email,
             type: data.type,
-            points: 300,
+            points: 150,
             createdAt: serverTimestamp(),
           });
         }

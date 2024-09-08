@@ -1,37 +1,46 @@
-import condenseIt from "@/lib/services/condense-it";
-import { writeFile, mkdir, unlink } from "fs/promises";
+import { model } from "@/utils/genai";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
 
 export async function POST(request: NextRequest) {
-  const data = await request.formData();
-  const file: File | null = data.get("file") as unknown as File;
-
-  if (!file) {
-    return NextResponse.json({ success: false, error: "No file uploaded" });
-  }
-
   try {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const body = await request.json();
+    const { fileData, language, mimeType, fileName } = body;
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
+    if (mimeType !== "application/pdf") {
+      throw new Error("Only PDF files are supported");
+    }
 
-    const fileName = file.name;
-    const filePath = join(uploadsDir, fileName);
+    const decodedFileData = Buffer.from(fileData, "base64").toString("utf-8");
 
-    await writeFile(filePath, buffer);
-    const content = await condenseIt(filePath);
+    const prompt = `Let's think step-by-step. Create an easy-to-understand summary with a thesis statement or the results of the research wrapped in a span tag with className="bg-pink-300". Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style.
+    Output:
+    - Title (Use the original title)
+    - Summary
+    - Keywords (if keywords are in English, use them directly, don't use other languages.)
+    - Key Insights (if keywords are in English, use them directly, don't use other languages.)
+    - Similar Articles or Paper (contains articles or papers similar to the file)
 
-    await unlink(filePath);
-    return NextResponse.json({ success: true, text: content });
+    outputs in ${language}
+
+    The content of the PDF file "${fileName}" is as follows:
+
+    ${decodedFileData}
+    `;
+
+    const result = await model.generateContent([prompt]);
+    const text = result.response.text();
+    return NextResponse.json({ success: true, text });
   } catch (error) {
     console.error("Error processing file:", error);
-    return NextResponse.json({
-      success: false,
-      error: "Error processing file",
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown error processing file",
+      },
+      { status: 500 }
+    );
   }
 }

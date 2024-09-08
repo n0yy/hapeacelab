@@ -11,7 +11,7 @@ export default function GeneratedCard({ markdown }: any) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}
-        className="prose-sm md:prose mx-auto text-justify shadow-neo rounded-xl p-10 my-10 lg:mb-10 overflow-hidden"
+        className="prose-sm md:prose mx-auto text-justify shadow-neo rounded-xl p-5 md:p-10 my-10 lg:mb-10 overflow-hidden"
       >
         {markdown}
       </ReactMarkdown>

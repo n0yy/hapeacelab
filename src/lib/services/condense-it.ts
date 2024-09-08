@@ -1,29 +1,38 @@
-import { model, fileManager } from "@/utils/genai";
-
-export default async function condenseIt(filePath: string) {
-  const uploadResponse = await fileManager.uploadFile(filePath, {
-    mimeType: "application/pdf",
-    displayName: "file.pdf",
+export default async function condenseIt(
+  file: File,
+  language = "english",
+  mimeType = "application/pdf"
+) {
+  // Convert file to base64
+  const fileData = await new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.readAsDataURL(file); // Changed back to readAsDataURL
   });
-  const prompt = `Let's think step-by-step. Buatkan rangkuman yang mudah dipahami disertai pernyataan tesis atau hasil dari penelitian tersebut yang dibungkus oleh tag span dengan className="bg-pink-300". Tambahkan keywords dan key insights jika memungkinkan. Tambahkan Emoji untuk setiap keywords dan key insights. generate dalam bahasa Indonesia dan gunakan gaya bahasa yang mudah dimengerti.
-    Output:
-    - Judul (Gunakan judul asli)
-    - Rangkuman 
-    - Keywords (jika keywords berbahasa inggris gunakan langsung jangan gunakan bahasa lain.)
-    - Key Insights (jika keywords berbahasa inggris gunakan langsung jangan gunakan bahasa lain.)
-    - Similar Articles or Paper (berisi artikel atau paper yang mirip dengan file)
 
-    `;
-  const result = await model.generateContent([
-    {
-      fileData: {
-        mimeType: uploadResponse.file.mimeType,
-        fileUri: uploadResponse.file.uri,
-      },
+  // Extract the base64 data from the Data URL
+  const base64Data = fileData.split(",")[1];
+
+  const response = await fetch("/api/condense-it", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      text: prompt,
-    },
-  ]);
-  return result.response.text();
+    body: JSON.stringify({
+      fileData: base64Data,
+      language,
+      mimeType,
+      fileName: file.name,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      `Failed to generate description: ${errorData.error || "Unknown error"}`
+    );
+  }
+
+  const data = await response.json();
+  return data.text;
 }

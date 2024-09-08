@@ -9,6 +9,7 @@ import { updatePoints } from "@/lib/services/firebase/users";
 import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
+import condenseIt from "@/lib/services/condense-it";
 
 interface User {
   fullName: string;
@@ -27,6 +28,7 @@ export default function CondenseIt() {
   const [content, setContent] = useState<string | null>(null);
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
   const {
     data: user,
@@ -63,35 +65,20 @@ export default function CondenseIt() {
       setLoadingContent(true);
       window.scrollTo({ top: 200, behavior: "smooth" });
 
-      const data = new FormData();
-      data.set("file", file);
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/condense-it`,
-        {
-          method: "POST",
-          body: data,
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to upload file");
-      }
-
-      const jsonResponse = await res.json();
-      setContent(jsonResponse.text);
+      // call condenseIt with the file object directly
+      const res = await condenseIt(file, selectedLanguage);
+      setContent(res);
 
       // Update points only if successful
-      if (session.user?.email) {
-        await updatePoints(session.user.email, 30);
-        // Update local user data to reflect point change
+      if (session?.user?.email) {
+        await updatePoints(session?.user?.email, 30);
         mutate(
           (prevUser: User | null) =>
             prevUser ? { ...prevUser, points: prevUser.points - 30 } : null,
           false
         );
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       alert("An error occurred. Please try again.");
     } finally {
@@ -100,11 +87,11 @@ export default function CondenseIt() {
   };
 
   if (error) return <div>Failed to load user data</div>;
-
+  console.log(`Content: ${content}`);
   return (
     <>
       <title>CondenseIt</title>
-      <main className="min-h-screen max-w-3xl mx-10 md:mx-auto mt-20 md:mt-32">
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-20 md:mt-32">
         <h1 className="text-3xl font-semibold underline mb-2">CondenseIt</h1>
         <p>
           Quickly distill the essential points from any paper. CondenseIt
@@ -112,7 +99,21 @@ export default function CondenseIt() {
           ideal for students, researchers, and professionals who need concise,
           clear summaries in seconds.
         </p>
-
+        <select
+          name="language"
+          id="language"
+          className="w-full rounded-lg mt-3 bg-primary text-slate-800"
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+        >
+          <option value="">Select output language</option>
+          <option value="english">English</option>
+          <option value="indonesian">Indonesian</option>
+          <option value="korean">Korean</option>
+          <option value="japanese">Japanese</option>
+          <option value="Sundanese">Sunda</option>
+          <option value="Javanese">Wa jawa ettt jawa</option>
+        </select>
         <UploadFile
           acceptedFile=".pdf"
           handleSubmit={handleSubmit}
@@ -121,10 +122,11 @@ export default function CondenseIt() {
           needPoints={30}
           isMultiple={false}
         />
+
         {showAlert && <AlertPoints />}
         {loadingContent && (
-          <div className="text-center my-10">
-            Thinking <EosIconsThreeDotsLoading />{" "}
+          <div className="text-center my-10 flex items-center space-x-1">
+            <span>Thinking</span> <EosIconsThreeDotsLoading />
           </div>
         )}
         {content && <GeneratedCard markdown={content} />}
