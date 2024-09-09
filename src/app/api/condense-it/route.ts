@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
     Output:
     - Title (Use english for title)
     - Summary
-    - Keywords
-    - Key Insights
+    - Keywords (for each keyword use english and for the meaning use ${language})
+    - Key Insights (for each key insight use english and for the meaning use ${language})
     - Similar Articles or Paper (contains articles or papers similar to the file)
 
     outputs in ${language}
