@@ -9,6 +9,8 @@ import { updatePoints } from "@/lib/services/firebase/users";
 import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
+import { storage } from "@/utils/firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import condenseIt from "@/lib/services/condense-it";
 
 interface User {
@@ -54,6 +56,11 @@ export default function CondenseIt() {
       return;
     }
 
+    if (file.type !== "application/pdf") {
+      alert("Only PDF files are allowed");
+      return;
+    }
+
     if (user?.user?.points < 30) {
       console.log(`User ${session?.user?.email} does not have enough points`);
       setShowAlert(true);
@@ -65,9 +72,23 @@ export default function CondenseIt() {
       setLoadingContent(true);
       window.scrollTo({ top: 200, behavior: "smooth" });
 
-      // call condenseIt with the file object directly
-      const res = await condenseIt(file, selectedLanguage);
-      setContent(res);
+      // Create FormData
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("language", selectedLanguage);
+
+      // Send file directly to API route
+      const response = await fetch("/api/condense-it", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setContent(result.text);
 
       // Update points only if successful
       if (session?.user?.email) {
@@ -80,7 +101,11 @@ export default function CondenseIt() {
       }
     } catch (error) {
       console.error(error);
-      alert("An error occurred. Please try again.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred. Please try again."
+      );
     } finally {
       setLoadingContent(false);
     }

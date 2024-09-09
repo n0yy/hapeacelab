@@ -1,33 +1,59 @@
-import { model } from "@/utils/genai";
 import { NextRequest, NextResponse } from "next/server";
+import { model, fileManager } from "@/utils/genai";
+import { writeFile, unlink } from "fs/promises";
+import { join } from "path";
+import os from "os";
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { fileData, language, mimeType, fileName } = body;
+  let tempFilePath: string | null = null;
 
+  try {
+    const formData = await request.formData();
+    const file = formData.get("file") as File;
+    const language = formData.get("language") as string;
+
+    if (!file) {
+      throw new Error("No file uploaded");
+    }
+
+    const mimeType = file.type;
     if (mimeType !== "application/pdf") {
       throw new Error("Only PDF files are supported");
     }
 
-    const decodedFileData = Buffer.from(fileData, "base64").toString("utf-8");
+    // Create a temporary file
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    tempFilePath = join(os.tmpdir(), file.name);
+    await writeFile(tempFilePath, buffer);
+
+    // Upload the file to Google File Manager
+    const uploadResponse = await fileManager.uploadFile(tempFilePath, {
+      mimeType: mimeType,
+      displayName: file.name,
+    });
 
     const prompt = `Let's think step-by-step. Create an easy-to-understand summary with a thesis statement or the results of the research wrapped in a span tag with className="bg-pink-300". Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style.
     Output:
-    - Title (Use the original title)
+    - Title (Use english for title)
     - Summary
-    - Keywords (if keywords are in English, use them directly, don't use other languages.)
-    - Key Insights (if keywords are in English, use them directly, don't use other languages.)
+    - Keywords
+    - Key Insights
     - Similar Articles or Paper (contains articles or papers similar to the file)
 
     outputs in ${language}
-
-    The content of the PDF file "${fileName}" is as follows:
-
-    ${decodedFileData}
     `;
 
-    const result = await model.generateContent([prompt]);
+    const result = await model.generateContent([
+      {
+        fileData: {
+          mimeType: uploadResponse.file.mimeType,
+          fileUri: uploadResponse.file.uri,
+        },
+      },
+      { text: prompt },
+    ]);
+
     const text = result.response.text();
     return NextResponse.json({ success: true, text });
   } catch (error) {
@@ -42,5 +68,14 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
+  } finally {
+    // Clean up: delete the temporary file
+    if (tempFilePath) {
+      try {
+        await unlink(tempFilePath);
+      } catch (unlinkError) {
+        console.error("Error deleting temporary file:", unlinkError);
+      }
+    }
   }
 }
