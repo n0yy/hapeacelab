@@ -30,10 +30,8 @@ export default function Home() {
               AI-Powered Tools to Simplify Your Work.
             </h1>
             <p className="mb-6 text-slate-700 tracking-wider text-sm md:text-base px-8 md:px-0">
-              Simplify your workflow with our AI-powered tools, from
-              Speech-to-Text, paper summarization, to key point extraction from
-              YouTube videos, and much more. Let us handle the heavy lifting, so
-              you can focus on what matters most.
+              Simplify your workflow with our AI-powered tools. Let us handle
+              the heavy lifting, so you can focus on what matters most.
             </p>
             {!session && (
               <Link
@@ -155,7 +153,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-40 mb-5 text-xs text-center text-slate-600">
-          @ 2024 Hapeacelab | All right reserved
+          @ 2024 Hapeacelab
         </footer>
         {/* End Footer */}
       </main>
