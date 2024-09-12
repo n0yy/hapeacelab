@@ -1,5 +1,9 @@
+import React, { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { Accept } from "react-dropzone";
+
 export default function UploadFile(props: {
-  acceptedFile: string;
+  acceptedFile: Accept | string;
   handleSubmit: any;
   file: any;
   setFile: any;
@@ -9,27 +13,39 @@ export default function UploadFile(props: {
   const { acceptedFile, handleSubmit, file, setFile, needPoints, isPDF } =
     props;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      const fileSizeInMB = selectedFile.size / (1024 * 1024); // Convert bytes to MB
-      if (fileSizeInMB > 4) {
-        alert("File size exceeds 4MB. Please upload a smaller file.");
-        return;
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const selectedFile = acceptedFiles[0];
+      if (selectedFile) {
+        const fileSizeInMB = selectedFile.size / (1024 * 1024); // Convert bytes to MB
+        if (fileSizeInMB > 4) {
+          alert("File size exceeds 4MB. Please upload a smaller file.");
+          return;
+        }
+        setFile(selectedFile);
       }
-      setFile(selectedFile);
-    }
-  };
+    },
+    [setFile]
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: acceptedFile as Accept,
+    maxSize: 4 * 1024 * 1024, // 4MB
+  });
 
   return (
     <form
       onSubmit={handleSubmit}
       className="flex flex-col items-center justify-center w-full mb-10 mt-3"
     >
-      <label
-        htmlFor="dropzone-file"
-        className="flex flex-col items-center justify-center w-full h-64 border-[1px] border-gray-500 rounded-lg cursor-pointer"
+      <div
+        {...getRootProps()}
+        className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer ${
+          isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
+        }`}
       >
+        <input {...getInputProps()} />
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           <svg
             className="w-8 h-8 mb-1 text-gray-700"
@@ -57,16 +73,7 @@ export default function UploadFile(props: {
             {file ? file.name : acceptedFile}
           </p>
         </div>
-        <input
-          id="dropzone-file"
-          name="file"
-          type="file"
-          accept={acceptedFile}
-          className="hidden"
-          required
-          onChange={handleFileChange}
-        />
-      </label>
+      </div>
       <span className="text-sm text-slate-600 mt-2">
         You need {needPoints} point to do it!
       </span>
