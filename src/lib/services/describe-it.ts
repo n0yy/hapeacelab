@@ -10,10 +10,9 @@ export default async function describeIt(
     reader.readAsDataURL(file);
   });
 
-  // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
   const base64Data = fileData.split(",")[1];
 
-  const response = await fetch("/api/describe-it", {
+  const response = await fetch("/api/services/describe-it", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -33,15 +33,13 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Let's think step-by-step. Create an easy-to-understand summary with a thesis statement or the results of the research wrapped in a span tag with className="bg-pink-300". Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style.
+    const prompt = `Let's think step-by-step. Create an easy-to-understand summary with a thesis statement or the results of the research wrapped in a span tag with className="bg-pink-300". Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style. outputs in ${language}
     Output:
     - Title (Use english for title)
     - Summary
     - Keywords (for each keyword use english and for the meaning use ${language})
     - Key Insights (for each key insight use english and for the meaning use ${language})
     - Similar Articles or Paper (contains articles or papers similar to the file)
-
-    outputs in ${language}
     `;
 
     const result = await model.generateContent([
@@ -56,18 +54,19 @@ export async function POST(request: NextRequest) {
 
     const text = result.response.text();
     return NextResponse.json({ success: true, text });
-  } catch (error) {
-    console.error("Error processing file:", error);
-    return NextResponse.json(
-      {
+  } catch (error: any) {
+    if (error.message.includes("SAFETY")) {
+      return NextResponse.json({
         success: false,
         error:
-          error instanceof Error
-            ? error.message
-            : "Unknown error processing file",
-      },
-      { status: 500 }
-    );
+          "File content was blocked due to SAFETY. Please try again or try to another file.",
+      });
+    } else {
+      return NextResponse.json({
+        success: false,
+        error: "Error processing file",
+      });
+    }
   } finally {
     // Clean up: delete the temporary file
     if (tempFilePath) {

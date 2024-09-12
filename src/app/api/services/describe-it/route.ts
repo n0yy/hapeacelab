@@ -22,11 +22,18 @@ export async function POST(request: NextRequest) {
     const result = await model.generateContent([prompt, imagePart]);
     const text = result.response.text();
     return NextResponse.json({ success: true, text });
-  } catch (error) {
-    console.error("Error processing file:", error);
-    return NextResponse.json({
-      success: false,
-      error: "Error processing file",
-    });
+  } catch (error: any) {
+    if (error.message.includes("SAFETY")) {
+      return NextResponse.json({
+        success: false,
+        error:
+          "File content was blocked due to SAFETY. Please try again or try to another file.",
+      });
+    } else {
+      return NextResponse.json({
+        success: false,
+        error: "Error processing file",
+      });
+    }
   }
 }

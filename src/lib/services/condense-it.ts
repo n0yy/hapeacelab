@@ -3,7 +3,7 @@ export default async function condenseIt(
   language = "english",
   mimeType = "application/pdf"
 ) {
-  const response = await fetch("/api/condense-it", {
+  const response = await fetch("/api/services/condense-it", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
