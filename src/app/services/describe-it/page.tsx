@@ -136,7 +136,7 @@ export default function DescribeIt() {
           file={file}
           setFile={setFile}
           needPoints={10}
-          isMultiple={true}
+          isPDF={false}
         />
         {showAlert && <AlertPoints />}
         {loadingContent && (

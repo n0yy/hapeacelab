@@ -145,7 +145,7 @@ export default function CondenseIt() {
           file={file}
           setFile={setFile}
           needPoints={30}
-          isMultiple={false}
+          isPDF={true}
         />
 
         {showAlert && <AlertPoints />}
