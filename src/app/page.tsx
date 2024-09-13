@@ -17,6 +17,9 @@ export default function Home() {
           id="heroes"
         >
           <div className="relative text-center max-w-3xl mx-auto">
+            <p className="mb-3 mx-auto text-slate-50 bg-slate-900 py-2 px-5 max-w-max text-sm animate-bounce">
+              Experimental
+            </p>
             {session && session.user && (
               <p className="text-slate-500 mb-4 text-lg">
                 Hi{" "}
@@ -26,11 +29,7 @@ export default function Home() {
                 ✌️ how can we help you?
               </p>
             )}
-            <p className="mb-3 mx-auto text-slate-50 bg-slate-900 py-2 px-5 max-w-max text-sm animate-bounce">
-              This project is currently in the{" "}
-              <span className="underline underline-offset-2">Experimental</span>{" "}
-              stage
-            </p>
+
             <h1 className="text-4xl font-bold mb-2 text-slate-900 px-5 md:px-0">
               AI-Powered Tools to Simplify Your Work.
             </h1>

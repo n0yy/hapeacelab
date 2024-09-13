@@ -9,9 +9,6 @@ import { updatePoints } from "@/lib/services/firebase/users";
 import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
-import { storage } from "@/utils/firebase/config";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import condenseIt from "@/lib/services/condense-it";
 
 interface User {
   fullName: string;
@@ -78,7 +75,7 @@ export default function CondenseIt() {
       formData.append("language", selectedLanguage);
 
       // Send file directly to API route
-      const response = await fetch("/api/condense-it", {
+      const response = await fetch("/api/services/condense-it", {
         method: "POST",
         body: formData,
       });
