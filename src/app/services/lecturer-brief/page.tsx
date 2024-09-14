@@ -1,59 +1,161 @@
 "use client";
 
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
-import rehypeRaw from "rehype-raw";
-import "katex/dist/katex.min.css";
+import { useState } from "react";
+import useSWR from "swr";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import GeneratedCard from "@/components/GeneratedCard";
+import { updatePoints } from "@/lib/services/firebase/users";
+import UploadFile from "@/components/UploadFile";
+import AlertPoints from "@/components/AlertPoints";
+import { EosIconsThreeDotsLoading } from "@/components/Loading";
+import useSWRMutation from "swr/mutation";
+
+interface User {
+  fullName: string;
+  email: string;
+  type: string;
+  points: number;
+  createdAt: Date;
+}
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const postFetcher = async (url: string, { arg }: { arg: FormData }) => {
+  const response = await fetch(url, {
+    method: "POST",
+    body: arg,
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};
 
 export default function LecturerBriefPage() {
-  const mark = `## PSIKOLOGI REMAJA DAN PERMASALAHANNYA
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [file, setFile] = useState<File | null>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
-<span className="bg-pink-200">Artikel ini membahas tentang psikologi remaja dan permasalahan yang mereka hadapi. Artikel ini menganalisis bagaimana remaja mengalami perubahan fisik dan mental selama masa pubertas dan bagaimana mereka berinteraksi dengan teman sebaya, keluarga, dan lingkungan mereka. Artikel ini juga memberikan beberapa tips dan strategi untuk mengatasi permasalahan remaja.</span>
+  const {
+    data: user,
+    error: userError,
+    mutate: mutateUser,
+  } = useSWR<User | any>(
+    session?.user?.email
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/users/${session.user.email}`
+      : null,
+    fetcher
+  );
 
-### Rangkuman
+  const {
+    trigger,
+    data: content,
+    error: contentError,
+    isMutating,
+  } = useSWRMutation("/api/services/lecturer-brief", postFetcher);
 
-Artikel ini membahas tentang psikologi remaja dan permasalahan yang mereka hadapi. Fase remaja adalah masa peralihan dari masa kanak-kanak menuju dewasa, di mana banyak perubahan fisik dan mental terjadi. Perubahan fisik meliputi pembesaran buah dada, pertumbuhan kumis, jenggot, dan perubahan suara, sedangkan perubahan mental meliputi pencapaian identitas diri, pemikiran logis, abstrak, dan idealistis. 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-Masa remaja juga merupakan masa di mana remaja mulai berinteraksi dengan teman sebaya dan mengalami tekanan untuk mengikuti tren atau norma kelompok. Tekanan teman sebaya bisa positif atau negatif dan penting untuk orangtua dan guru untuk memberikan perhatian khusus pada remaja yang menunjukkan perilaku menyimpang seperti berbuat onar, mencuri, dan lain-lain. 
+    if (!session) {
+      router.push("/login");
+      return;
+    }
 
-Permasalahan remaja juga dibahas dalam artikel ini, di mana masalah tersebut dapat dibagi menjadi empat kategori: penyalahgunaan obat, kenakalan remaja, masalah seksual, dan masalah terkait sekolah. Artikel ini juga membahas pentingnya peran orangtua, guru, dan lingkungan untuk membantu remaja dalam mengatasi permasalahan mereka dan memberikan beberapa tips untuk mengatasi masalah remaja. 
+    if (!file) {
+      alert("No File Uploaded");
+      return;
+    }
 
-### Keywords 
+    if (file.type !== "application/pdf") {
+      alert("Only PDF files are allowed");
+      return;
+    }
 
-- Puberty (👩‍🏫)
-- Conformity (🤝)
-- Identity (👤)
-- Peer Pressure (👥)
-- Social Interaction (🤝)
-- Adolescence (👨‍🎓)
-- Mental Health (🧠)
-- Psychological Development (🧠)
+    if (user?.user?.points < 30) {
+      console.log(`User ${session?.user?.email} does not have enough points`);
+      setShowAlert(true);
+      return;
+    }
 
-### Key Insights 
+    try {
+      window.scrollTo({ top: 200, behavior: "smooth" });
 
-- **Remaja membutuhkan dukungan dari orangtua dan guru untuk menghadapi tekanan teman sebaya.** (🤝🧠)
-- **Permasalahan remaja dapat diatasi dengan dukungan dari orangtua, guru, dan lingkungan.** (🤝🧠)
-- **Remaja perlu belajar mengelola emosi dan mengembangkan kemandirian.** (🧠👨‍🎓)
-- **Perkembangan psikologi remaja sangat penting untuk dipahami agar dapat memberikan dukungan yang tepat.** (🧠👨‍🎓)
+      // Create FormData
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("language", selectedLanguage);
 
-### Similar Articles or Paper 
+      // Use SWR's trigger function to send the request
+      await trigger(formData);
 
-- **"Psikologi Perkembangan Anak"** oleh **Jos Masdani**
-- **"Psikologi Umum Dalam Lintasan Sejarah"** oleh **Alex Sobur**
-- **"Pendidikan Karakter: Konsepsi dan Aplikasinya dalam Lembaga Pendidikan"** oleh **Zubaidi**
-`;
+      // Update points only if successful
+      if (session?.user?.email) {
+        await updatePoints(session?.user?.email, 15);
+        mutateUser(
+          (prevUser: User | null) =>
+            prevUser ? { ...prevUser, points: prevUser.points - 15 } : null,
+          false
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred. Please try again."
+      );
+    }
+  };
+
+  if (userError) return <div>Failed to load user data</div>;
   return (
     <>
-      <div>LecturerBriefPage</div>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeRaw, rehypeKatex]}
-        className="prose-sm md:prose mx-auto shadow-neo rounded-xl p-10 my-10 lg:mb-10 overflow-hidden"
-      >
-        {mark}
-      </ReactMarkdown>
+      <title>Lecturer Brief</title>
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-20 md:mt-32">
+        <h1 className="text-3xl font-semibold underline mb-2">
+          Lecturer Brief
+        </h1>
+        <p>
+          Simplify lecture content into essential takeaways. Lecturer Summarizer
+          condenses academic lectures into clear summaries, perfect for students
+          who need quick and efficient study aids.
+        </p>
+        <select
+          name="language"
+          id="language"
+          className="w-full rounded-lg mt-3 bg-primary text-slate-800"
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+        >
+          <option value="">Select output language</option>
+          <option value="english">English</option>
+          <option value="indonesian">Indonesian</option>
+          <option value="korean">Korean</option>
+          <option value="japanese">Japanese</option>
+          <option value="Sundanese">Sunda</option>
+          <option value="Javanese">Wa jawa ettt jawa</option>
+        </select>
+        <UploadFile
+          acceptedFile=".pdf"
+          handleSubmit={handleSubmit}
+          file={file}
+          setFile={setFile}
+          needPoints={15}
+          isPDF={true}
+        />
+
+        {showAlert && <AlertPoints />}
+        {isMutating && (
+          <div className="text-center my-10 flex items-center space-x-1">
+            <span>Thinking</span> <EosIconsThreeDotsLoading />
+          </div>
+        )}
+        {content && <GeneratedCard markdown={content.text} />}
+        {contentError && <div>Error: {contentError.message}</div>}
+      </main>
     </>
   );
 }

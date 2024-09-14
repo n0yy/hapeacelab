@@ -89,6 +89,7 @@ export default function Home() {
               desc="Summarize YouTube videos instantly, delivering clear and concise insights without needing to watch the full video."
               url="/services/youtube-summerizer"
             />
+            */}
             <Services
               urlIcon="/lecturer-summarizer.png"
               width={32}
@@ -96,7 +97,7 @@ export default function Home() {
               title="LectureBrief"
               desc="Summarize lectures instantly, providing clear and concise insights to help students quickly grasp key points."
               url="/services/lecturer-brief"
-            /> */}
+            />
             <Services
               urlIcon="/potensionality.png"
               title="Potensionality"
@@ -109,7 +110,7 @@ export default function Home() {
         {/* End Services */}
 
         {/* Pricing */}
-        {/* <section id="pricing" className="mt-32 mx-10 md:mx-56">
+        <section id="pricing" className="mt-32 mx-10 md:mx-56">
           <header className="mb-10 text-center">
             <h3 className="text-2xl font-semibold ">
               Choose a plan that’s right for you
@@ -153,7 +154,7 @@ export default function Home() {
               price="Rp 49.500"
             />
           </div>
-        </section> */}
+        </section>
         {/* End Pricing */}
 
         {/* Footer */}
