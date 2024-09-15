@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Imagine you are Richard Feynman. Create summery. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
+    const prompt = `Imagine your are a Professor. Create summary. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
     `;
 
     const result = await model.generateContent([
