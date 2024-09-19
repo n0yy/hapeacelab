@@ -87,6 +87,7 @@ export default function LecturerBriefPage() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("language", selectedLanguage);
+      formData.append("email", session?.user?.email as string);
 
       // Use SWR's trigger function to send the request
       await trigger(formData);
@@ -114,7 +115,7 @@ export default function LecturerBriefPage() {
   return (
     <>
       <title>Lecturer Brief</title>
-      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-20 md:mt-32">
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10">
         <h1 className="text-3xl font-semibold underline mb-2">
           Lecturer Brief
         </h1>

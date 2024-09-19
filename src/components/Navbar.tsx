@@ -55,7 +55,7 @@ export default function Navbar() {
           className="scale-90 md:scale-100"
         />
       </Link>
-      <div className="space-x-8 text-slat-600 font-light hidden lg:block">
+      <div className="space-x-8 text-slate-600 font-light hidden lg:block">
         <Link href="/">Home</Link>
         <Link href="#services">Services</Link>
         <Link href="#pricing">Pricing</Link>

@@ -67,8 +67,17 @@ export default function DescribeIt() {
       window.scrollTo({ top: 200, behavior: "smooth" });
 
       // Call describeIt with the file object directly
-      const res = await describeIt(file, productName, selectedLanguage);
-      setContent(res);
+      if (session?.user?.email) {
+        const res = await describeIt(
+          file,
+          productName,
+          selectedLanguage,
+          session?.user?.email
+        );
+        setContent(res);
+      } else {
+        alert("An error occurred. Please try again.");
+      }
 
       // Update points only if successful
       if (session?.user?.email) {
@@ -93,7 +102,7 @@ export default function DescribeIt() {
   return (
     <>
       <title>DescribeIt</title>
-      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-32">
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
         <h1 className="text-3xl font-semibold underline mb-2">DescribeIt</h1>
         <p>
           Effortlessly generate product descriptions by simply uploading an

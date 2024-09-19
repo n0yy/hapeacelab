@@ -25,7 +25,10 @@ export default function Login() {
             <p className="text-slate-700 text-sm">OR</p>
             <hr className="border-t border-gray-300 flex-grow ml-3" />
           </div>
-          <span className="cursor-pointer border border-black/25 mt-5 w-full py-1.5 rounded-lg flex items-center justify-start pl-7 space-x-3">
+          <span
+            className="cursor-pointer border border-black/25 mt-5 w-full py-1.5 rounded-lg flex items-center justify-start pl-7 space-x-3"
+            aria-disabled
+          >
             <Image src="/fb.png" width={20} height={22} alt="google" />
             <span>Continue with Facebook</span>
           </span>

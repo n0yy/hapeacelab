@@ -73,6 +73,7 @@ export default function CondenseIt() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("language", selectedLanguage);
+      formData.append("userEmail", session?.user?.email ?? "");
 
       // Send file directly to API route
       const response = await fetch("/api/services/condense-it", {
@@ -113,7 +114,7 @@ export default function CondenseIt() {
   return (
     <>
       <title>CondenseIt</title>
-      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-20 md:mt-32">
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
         <h1 className="text-3xl font-semibold underline mb-2">CondenseIt</h1>
         <p>
           Quickly distill the essential points from any paper. CondenseIt

@@ -1,7 +1,8 @@
 export default async function describeIt(
   file: File,
   productName: string,
-  language: string
+  language: string,
+  userEmail: string
 ) {
   // Convert file to base64
   const fileData = await new Promise<string>((resolve) => {
@@ -22,6 +23,7 @@ export default async function describeIt(
       mimeType: file.type,
       productName,
       language,
+      userEmail,
     }),
   });
 

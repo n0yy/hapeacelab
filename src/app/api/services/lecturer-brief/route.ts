@@ -3,6 +3,7 @@ import { model, fileManager } from "@/utils/genai";
 import { writeFile, unlink } from "fs/promises";
 import { join } from "path";
 import os from "os";
+import { saveHistory } from "@/utils/firebase/history";
 
 export async function POST(request: NextRequest) {
   let tempFilePath: string | null = null;
@@ -11,6 +12,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get("file") as File;
     const language = formData.get("language") as string;
+    const email = formData.get("email") as string;
 
     if (!file) {
       throw new Error("No file uploaded");
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Imagine your are a Professor. Create summary. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
+    const prompt = `First thing is analyze the file is a material given by the lecturer or not, if not give a response that the file is not a material given by the lecturer. Imagine your are a Professor. Create summary. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
     `;
 
     const result = await model.generateContent([
@@ -47,6 +49,15 @@ export async function POST(request: NextRequest) {
     ]);
 
     const text = result.response.text();
+
+    // Store History
+    await saveHistory(email, "lecturer-brief", {
+      generated: text,
+      language,
+      file: uploadResponse.file,
+      title: text.match(/##\s*(.*?)\n/)?.[1] || "Untitled",
+    });
+
     return NextResponse.json({ success: true, text });
   } catch (error: any) {
     if (error.message.includes("SAFETY")) {

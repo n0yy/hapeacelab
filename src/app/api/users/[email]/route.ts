@@ -8,7 +8,6 @@ export async function GET(
   const email = params.email;
 
   const user = await getUser(email);
-
   if (!user) {
     return NextResponse.json({ success: false });
   } else {
