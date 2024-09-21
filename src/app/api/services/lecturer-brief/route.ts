@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `First thing is analyze the file is a material given by the lecturer or not, if not give a response that the file is not a material given by the lecturer. Imagine your are a Professor. Create summary. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
+    const prompt = `Imagine your are a Professor. Create summary. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
     `;
 
     const result = await model.generateContent([

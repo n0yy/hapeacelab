@@ -10,6 +10,8 @@ import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
 import describeIt from "@/lib/services/describe-it";
+import { useTranslations } from "next-intl";
+import AsideServices from "@/components/Aside";
 
 interface User {
   fullName: string;
@@ -30,6 +32,9 @@ export default function DescribeIt() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  const t = useTranslations("DescribeIt");
+  const tAside = useTranslations("Aside");
 
   const {
     data: user,
@@ -102,24 +107,20 @@ export default function DescribeIt() {
   return (
     <>
       <title>DescribeIt</title>
+      <AsideServices tAside={tAside} />
       <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
-        <h1 className="text-3xl font-semibold underline mb-2">DescribeIt</h1>
-        <p>
-          Effortlessly generate product descriptions by simply uploading an
-          image. DescribeIt streamlines the process for online sellers, making
-          it easy to create compelling and accurate product descriptions in
-          seconds.
-        </p>
-        <h5 className="text-lg mt-3">For best results:</h5>
+        <h1 className="text-3xl font-semibold underline mb-2">{t("title")}</h1>
+        <p>{t("description")}</p>
+        <h5 className="text-lg mt-3">{t("warning.title")}</h5>
         <ul className="list-disc text-sm">
-          <li>Rotate images to the correct orientation before uploading.</li>
-          <li>Avoid blurry images.</li>
+          <li>{t("warning.first")}</li>
+          <li>{t("warning.second")}</li>
         </ul>
         <input
           type="text"
           name="name"
           id="name"
-          placeholder="Product Name"
+          placeholder={t("productName")}
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
           className="rounded-lg w-full mt-10 bg-primary"
@@ -130,21 +131,18 @@ export default function DescribeIt() {
           className="w-full rounded-lg mt-3 bg-primary text-slate-800"
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
+          required
         >
-          <option value="">Select output language</option>
+          <option value="">{t("language")}</option>
           <option value="english">English</option>
           <option value="indonesian">Indonesian</option>
-          <option value="korean">Korean</option>
-          <option value="japanese">Japanese</option>
-          <option value="Sundanese">Sunda</option>
-          <option value="Javanese">Wa jawa ettt jawa</option>
         </select>
         <UploadFile
           acceptedFile=".png,.jpeg,.webp,.heic,.heif"
           handleSubmit={handleSubmit}
           file={file}
           setFile={setFile}
-          needPoints={10}
+          needPoints={t("points")}
           isPDF={false}
         />
         {showAlert && <AlertPoints />}

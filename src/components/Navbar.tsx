@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import Avvvatars from "avvvatars-react";
-import { Dropdown } from "flowbite-react";
-import { LuCoins } from "react-icons/lu";
+import { LuCoins, LuGlobe } from "react-icons/lu";
+import { Dropdown, DropdownItem } from "flowbite-react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface User {
   name?: string | null | undefined;
@@ -60,33 +61,36 @@ export default function Navbar() {
         <Link href="#services">Services</Link>
         <Link href="#pricing">Pricing</Link>
       </div>
-      {session ? (
-        <span className="cursor-pointer" onClick={handleAvatar}>
-          <Dropdown
-            arrowIcon={false}
-            inline={true}
-            label={
-              <Avvvatars value={session.user?.email as string} size={36} />
-            }
+      <div className="flex items-center space-x-3 md:space-x-10">
+        <LanguageSwitcher />
+        {session ? (
+          <span className="cursor-pointer" onClick={handleAvatar}>
+            <Dropdown
+              arrowIcon={false}
+              inline={true}
+              label={
+                <Avvvatars value={session.user?.email as string} size={36} />
+              }
+            >
+              <Dropdown.Item onClick={() => signOut()}>Logout</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item>
+                <div className="space-x-2 flex items-center">
+                  <LuCoins />
+                  <span>{(session.user as User).points} Points</span>
+                </div>
+              </Dropdown.Item>
+            </Dropdown>
+          </span>
+        ) : (
+          <Link
+            href="/login"
+            className="border border-slate-800 px-8 py-1.5 rounded-md font-medium scale-90 hover:bg-black hover:text-white transition-all duration-200"
           >
-            <Dropdown.Item onClick={() => signOut()}>Logout</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item>
-              <div className="space-x-2 flex items-center">
-                <LuCoins />
-                <span>{(session.user as User).points} Points</span>
-              </div>
-            </Dropdown.Item>
-          </Dropdown>
-        </span>
-      ) : (
-        <Link
-          href="/login"
-          className="border border-slate-800 px-8 py-1.5 rounded-md font-medium scale-90 hover:bg-black hover:text-white transition-all duration-200"
-        >
-          Login
-        </Link>
-      )}
+            Login
+          </Link>
+        )}
+      </div>
     </nav>
   );
 }

@@ -1,0 +1,96 @@
+{
+  "Home": {
+    "experimental": "Experimental",
+    "greeting": "Hi {name} ✌️ how can we help you?",
+    "title": "AI-Powered Tools to Simplify Your Work.",
+    "description": "Simplify your workflow with our AI-powered tools. Let us handle the heavy lifting, so you can focus on what matters most.",
+    "tryItNow": "Try it Now!",
+    "services": {
+      "title": "Our services built by strong model.",
+      "subtitle": "With the strong model we can get what we need.",
+      "condenseIt": {
+        "title": "CondenseIt",
+        "description": "Summarize papers instantly, providing clear and concise insights in just seconds."
+      },
+      "describeIt": {
+        "title": "DescribeIt",
+        "description": "Create product descriptions instantly from an image, making it effortless for sellers to generate clear content."
+      },
+      "lectureBrief": {
+        "title": "LectureBrief",
+        "description": "Summarize lectures instantly, providing clear and concise insights to help students quickly grasp key points."
+      },
+      "potensionality": {
+        "title": "Potensionality",
+        "description": "Lorem ipsum dolor sit amet consectetur. Sollicitudin gravida tellus id nullam cum."
+      }
+    },
+    "pricing": {
+      "title": "Choose a plan that's right for you",
+      "subtitle": "Try our free plan to get 350 point. Switch plan if you want more point.",
+      "free": {
+        "title": "Free",
+        "features": [
+          "Lorem ipsum dolor sit amet consectetur.",
+          "Sollicitudin gravida tellus id nullam cum.",
+          "Potensionality",
+          "Get 150 point when you registered."
+        ],
+        "price": "Start free trial"
+      },
+      "lower": {
+        "title": "Lower",
+        "features": [
+          "Lorem ipsum dolor sit amet consectetur.",
+          "Sollicitudin gravida tellus id nullam cum.",
+          "Potensionality",
+          "Get 550 point",
+          "Speech-to-Text",
+          "CondenseIt"
+        ],
+        "price": "Rp 25.999"
+      },
+      "upper": {
+        "title": "Upper",
+        "features": [
+          "Lorem ipsum dolor sit amet consectetur.",
+          "Sollicitudin gravida tellus id nullam cum.",
+          "Get 1150 points",
+          "All Services"
+        ],
+        "price": "Rp 49.500"
+      }
+    },
+    "footer": "@ 2024 Hapeacelab"
+  },
+  "CondenseIt": {
+    "title": "CondenseIt",
+    "description": "Quickly distill the essential points from any paper. CondenseIt simplifies the process of summarizing long-form content, making it ideal for students, researchers, and professionals who need concise, clear summaries in seconds.",
+    "language": "Select output language",
+    "points": "You need 30 point to do it!"
+  },
+  "DescribeIt": {
+    "title": "DescribeIt",
+    "description": "Effortlessly generate product descriptions by simply uploading an image. DescribeIt streamlines the process for online sellers, making it easy to create compelling and accurate product descriptions in seconds.",
+    "warning": {
+      "title": "For best results:",
+      "first": "Rotate images to the correct orientation before uploading.",
+      "second": "Avoid blurry images."
+    },
+    "language": "Select output language",
+    "productName": "Product Name",
+    "points": "You need 10 point to do it!"
+  },
+  "LectureBrief": {
+    "title": "Lecture Brief",
+    "description": "Simplify lecture content into essential takeaways. Lecturer Summarizer condenses academic lectures into clear summaries, perfect for students who need quick and efficient study aids.",
+    "language": "Select output language",
+    "points": "You need 15 point to do it!"
+  },
+  "Aside": {
+    "homeText": "Home",
+    "servicesText": "Services",
+    "pricingText": "Pricing",
+    "historiesText": "Histories"
+  }
+}

@@ -7,7 +7,7 @@ export default function UploadFile(props: {
   handleSubmit: any;
   file: any;
   setFile: any;
-  needPoints: number;
+  needPoints: string;
   isPDF: boolean;
 }) {
   const { acceptedFile, handleSubmit, file, setFile, needPoints, isPDF } =
@@ -74,9 +74,7 @@ export default function UploadFile(props: {
           </p>
         </div>
       </div>
-      <span className="text-sm text-slate-600 mt-2">
-        You need {needPoints} point to do it!
-      </span>
+      <span className="text-sm text-slate-600 mt-2">{needPoints}</span>
       <input
         className="block w-40 mx-auto py-2 bg-slate-800 text-white rounded mt-3 hover:bg-primary hover:border border-slate-700 hover:text-slate-700 transition-all duration-200"
         type="submit"

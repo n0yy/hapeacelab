@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { fileData, mimeType, productName, language, userEmail } = body;
 
-    const prompt = `First thing is analyze the image is a product or not if not give a response that the image is not a product. Product Name: ${productName}. You are a marketing expert, especially in copywriting, to create attractive product descriptions. Your task: Analyze first whether the image is a product or not. If yes, create a product description based on existing information and create product details based on images. If not, give a warning that the image is not a product. Create a description that is friendly and good for SEO. Use ${language} for the outputs and use daily language to make it more friendly. Add emoji to make it look cute`;
+    const prompt = `Product Name: ${productName}. You are a marketing expert, especially in copywriting, to create attractive product descriptions. Your task: Analyze first whether the image is a product or not. If yes, create a product description based on existing information and create product details based on images. If not, give a warning that the image is not a product. Create a description that is friendly and good for SEO. Use ${language} for the outputs and use daily language to make it more friendly. Add emoji to make it look cute`;
 
     const imagePart = fileToGenerativePart(fileData, mimeType);
 

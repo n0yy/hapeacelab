@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `First thing is analyze the file is a paper, scientific papers or not, if not give a response that the file is not a paper or scientific paper. Imagine you are Research Consultant. Create a summary. Use Feynman Technique. Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style. use ${language} for the output.
+    const prompt = `Imagine you are Research Consultant. Create a summary. Use Feynman Technique. Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style. use ${language} for the output.
     Output:
     - Title (Use english for title)
     - Summary

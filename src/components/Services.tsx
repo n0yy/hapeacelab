@@ -19,7 +19,9 @@ export default function Services({ ...props }: any) {
       />
       <div className="w-8/12">
         <h4 className="text-lg md:text-xl font-semibold">{props.title}</h4>
-        <p className="text-xs md:text-sm mb-2">{props.desc}</p>
+        <p className="text-slate-600 block h-16 overflow-hidden text-ellipsis text-xs md:text-sm">
+          {props.desc}
+        </p>
         <Link
           href={props.url}
           className="text-sm md:text-base font-semibold underline "

@@ -1,0 +1,86 @@
+{
+  "Home": {
+    "experimental": "Eksperimen",
+    "greeting": "Hai {name} ✌️, ada yang bisa kami bantu hari ini?",
+    "title": "AI-Powered Tools untuk Mempermudah Kerjaan Kamu.",
+    "description": "Permudah pekerjaanmu dengan AI-Powered Tools kami. Biar kami yang urus hal-hal ribet, supaya kamu bisa fokus ke yang lebih penting.",
+    "tryItNow": "Coba Sekarang!",
+    "services": {
+      "title": "Hapeace Lab Dibangun dengan Model AI yang Kuat.",
+      "subtitle": "Dengan Model AI yang canggih, kita bisa dapetin hasil yang sesuai kebutuhan.",
+      "condenseIt": {
+        "title": "CondenseIt",
+        "description": "Ringkas makalah atau tulisan dengan cepat, hasilkan rangkuman yang jelas dan padat dalam hitungan detik."
+      },
+      "describeIt": {
+        "title": "DescribeIt",
+        "description": "Buat deskripsi produk langsung dari gambar. Cocok banget buat penjual yang mau deskripsi produk yang keren tanpa ribet."
+      },
+      "lectureBrief": {
+        "title": "LectureBrief",
+        "description": "Ringkas materi kuliah secara instan, bantu mahasiswa cepat ngerti poin-poin penting."
+      },
+      "potensionality": {
+        "title": "Potensionality",
+        "description": "Temukan potensi kamu dengan mudah, dan cari tahu jurusan atau karir yang paling cocok!"
+      }
+    },
+    "pricing": {
+      "title": "Pilih Paket yang Pas Buat Kamu",
+      "subtitle": "Coba paket gratis kami dan dapatkan 350 poin. Kalau butuh lebih banyak poin, kamu bisa upgrade paket kapan aja.",
+      "free": {
+        "title": "Gratis",
+        "features": [
+          "Layanan dasar untuk mulai coba-coba.",
+          "Dapatkan 150 poin saat daftar."
+        ],
+        "price": "Coba Gratis"
+      },
+      "lower": {
+        "title": "Lower",
+        "features": [
+          "Semua fitur dasar.",
+          "Dapatkan 550 poin.",
+          "Akses ke fitur Speech-to-Text dan CondenseIt."
+        ],
+        "price": "Rp 25.999"
+      },
+      "upper": {
+        "title": "Upper",
+        "features": ["Akses semua fitur dan layanan.", "Dapatkan 1150 poin."],
+        "price": "Rp 49.500"
+      }
+    },
+    "footer": "@ 2024 Hapeacelab"
+  },
+  "CondenseIt": {
+    "title": "CondenseIt",
+    "description": "Dengan CondenseIt, kamu bisa merangkum makalah atau paper panjang dengan cepat dan mudah. Cocok buat pelajar, peneliti, atau profesional yang butuh ringkasan singkat tapi jelas dalam hitungan detik.",
+    "language": "Pilih Bahasa",
+    "points": "Kamu perlu 30 poin buat pakai fitur ini!"
+  },
+  "DescribeIt": {
+    "title": "DescribeIt",
+    "description": "Cukup upload gambar, dan deskripsi produk akan otomatis dibuat. Mempermudah penjual online untuk bikin deskripsi produk yang menarik dan akurat dalam sekejap.",
+    "warning": {
+      "title": "Tips untuk hasil terbaik:",
+      "first": "Pastikan gambar tidak miring.",
+      "second": "Hindari gambar yang buram."
+    },
+    "language": "Pilih Bahasa",
+    "productName": "Nama Produk",
+    "points": "Kamu perlu 10 poin buat fitur ini!"
+  },
+  "LectureBrief": {
+    "title": "Lecture Brief",
+    "description": "Bikin ringkasan materi kuliah jadi lebih simpel dan mudah dimengerti. Cocok buat mahasiswa yang butuh alat belajar cepat dan efisien.",
+    "language": "Pilih Bahasa",
+    "points": "Kamu perlu 15 poin buat fitur ini!"
+  },
+  "Aside": {
+    "homeText": "Beranda",
+    "servicesText": "Layanan",
+    "pricingText": "Harga",
+    "historiesText": "Riwayat"
+  }
+}

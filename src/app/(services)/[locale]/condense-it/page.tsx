@@ -9,6 +9,8 @@ import { updatePoints } from "@/lib/services/firebase/users";
 import UploadFile from "@/components/UploadFile";
 import AlertPoints from "@/components/AlertPoints";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
+import { useTranslations } from "next-intl";
+import AsideServices from "@/components/Aside";
 
 interface User {
   fullName: string;
@@ -28,6 +30,9 @@ export default function CondenseIt() {
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+
+  const t = useTranslations("CondenseIt");
+  const tAside = useTranslations("Aside");
 
   const {
     data: user,
@@ -114,35 +119,28 @@ export default function CondenseIt() {
   return (
     <>
       <title>CondenseIt</title>
+      <AsideServices tAside={tAside} />
       <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
-        <h1 className="text-3xl font-semibold underline mb-2">CondenseIt</h1>
-        <p>
-          Quickly distill the essential points from any paper. CondenseIt
-          simplifies the process of summarizing long-form content, making it
-          ideal for students, researchers, and professionals who need concise,
-          clear summaries in seconds.
-        </p>
+        <h1 className="text-3xl font-semibold underline mb-2">{t("title")}</h1>
+        <p>{t("description")}</p>
         <select
           name="language"
           id="language"
           className="w-full rounded-lg mt-3 bg-primary text-slate-800"
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
+          required
         >
-          <option value="">Select output language</option>
+          <option value="">{t("language")}</option>
           <option value="english">English</option>
           <option value="indonesian">Indonesian</option>
-          <option value="korean">Korean</option>
-          <option value="japanese">Japanese</option>
-          <option value="Sundanese">Sunda</option>
-          <option value="Javanese">Wa jawa ettt jawa</option>
         </select>
         <UploadFile
           acceptedFile=".pdf"
           handleSubmit={handleSubmit}
           file={file}
           setFile={setFile}
-          needPoints={30}
+          needPoints={t("points")}
           isPDF={true}
         />
 

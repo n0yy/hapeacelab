@@ -7,6 +7,8 @@ import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Avvvatars from "avvvatars-react";
 import { LuCoins } from "react-icons/lu";
+import { IoMdMenu, IoMdClose } from "react-icons/io";
+import { useState } from "react";
 
 const fetcher = (url: string) =>
   fetch(url).then((res) => {
@@ -30,7 +32,8 @@ interface HistoryData {
   histories: History[];
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function AsideServices({ tAside }: { tAside: any }) {
+  const [showAside, setShowAside] = useState<boolean>(false);
   const { data: session } = useSession();
   const pathname = usePathname();
 
@@ -49,9 +52,44 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const histories = historyData?.histories || [];
 
+  const handleAside = () => {
+    setShowAside((prev) => !prev);
+
+    // Stop scroll on body
+    if (!showAside) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  };
+
   return (
-    <main className="flex">
-      <aside className="fixed  min-w-max h-screen overflow-y-auto p-10 bg-primary flex flex-col shadow-lg">
+    <>
+      <div
+        className={`flex items-center justify-between px-10 py-4 bg-white/10 backdrop-blur fixed top-0 w-full md:hidden ${
+          showAside ? "min-h-screen bg-white" : "z-0"
+        }`}
+      >
+        <Image src="/logo.png" width={82} alt="Logo" height={64} />
+        {showAside ? (
+          <IoMdClose
+            size={32}
+            className="absolute top-11 right-8 cursor-pointer md:hidden"
+            onClick={handleAside}
+          />
+        ) : (
+          <IoMdMenu
+            size={32}
+            className="cursor-pointer md:hidden"
+            onClick={handleAside}
+          />
+        )}
+      </div>
+      <aside
+        className={`${
+          showAside ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 fixed top-0 md:left-0 min-w-max h-screen overflow-y-auto p-10 bg-primary flex flex-col shadow-lg transition-all duration-200`}
+      >
         <div>
           <div className="flex items-end justify-between">
             <Image src="/logo.png" width={82} alt="Logo" height={64} />
@@ -62,13 +100,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             )}
           </div>
           <div className="mt-7 flex flex-col space-y-1 text-slate-600">
-            <Link href="/">Home</Link>
-            <Link href="/#services">Services</Link>
-            <Link href="/#pricing">Pricing</Link>
+            <Link href="/">{tAside("homeText")}</Link>
+            <Link href="/#services">{tAside("servicesText")}</Link>
+            <Link href="/#pricing">{tAside("pricingText")}</Link>
           </div>
           <div className="mt-5 max-w-64">
             <h3 className="text-lg mb-1 font-semibold text-slate-800">
-              Histories
+              {tAside("historiesText")}
             </h3>
             {historyError && (
               <div className="text-sm text-slate-400">
@@ -82,9 +120,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={item.id}
                     href={`/services/${serviceName}/${item.id}`}
-                    className="text-slate-600 block overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:bg-slate-300 p-2 rounded"
+                    className="text-slate-600 block overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:bg-slate-300 p-1.5 rounded"
                   >
-                    {item.title || `History ${item.id}`}
+                    {"> " + item.title || `History ${item.id}`}
                   </Link>
                 ))}
               </div>
@@ -126,7 +164,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           )}
         </div>
       </aside>
-      <div className="ml-72 flex-grow">{children}</div>
-    </main>
+    </>
   );
 }
