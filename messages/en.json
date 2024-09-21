@@ -92,5 +92,14 @@
     "servicesText": "Services",
     "pricingText": "Pricing",
     "historiesText": "Histories"
+  },
+  "Login": {
+    "title": "Login",
+    "subtitle": "Welcome, have a nice day!",
+    "withGoogle": "Continue with Google",
+    "withFacebook": "Continue with Facebook",
+    "withApple": "Continue with Apple",
+    "backHome": "back to home",
+    "or": "OR"
   }
 }

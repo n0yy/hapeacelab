@@ -82,5 +82,14 @@
     "servicesText": "Layanan",
     "pricingText": "Harga",
     "historiesText": "Riwayat"
+  },
+  "Login": {
+    "title": "Login",
+    "subtitle": "Hai, Semoga harimu menyenangkan!",
+    "withGoogle": "Lanjutkan dengan Google",
+    "withFacebook": "Lanjutkan dengan Facebook",
+    "withApple": "Lanjutkan dengan Apple",
+    "backHome": "kembali ke beranda",
+    "or": "ATAU"
   }
 }
