@@ -36,10 +36,7 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${poppins.className} bg-primary min-h-screen`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <SessionWrapper>
-            <Navbar />
-            {children}
-          </SessionWrapper>
+          <SessionWrapper>{children}</SessionWrapper>
         </NextIntlClientProvider>
       </body>
     </html>

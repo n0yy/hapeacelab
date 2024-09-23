@@ -99,7 +99,8 @@ export default function LecturerBriefPage() {
 
       // Update points only if successful
       if (session?.user?.email) {
-        await updatePoints(session?.user?.email, 15);
+        const res = await updatePoints(session?.user?.email, 15);
+        console.log(res);
         mutateUser(
           (prevUser: User | null) =>
             prevUser ? { ...prevUser, points: prevUser.points - 15 } : null,

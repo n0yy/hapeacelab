@@ -89,7 +89,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
       <aside
         className={`${
           showAside ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 fixed top-0 md:left-0 min-w-max h-screen overflow-y-auto p-10 bg-primary flex flex-col shadow-lg transition-all duration-200`}
+        } md:translate-x-0 fixed top-0 md:left-0 max-w-72 lg:max-w-sm h-screen overflow-y-auto p-10 bg-primary flex flex-col shadow-lg transition-all duration-200`}
       >
         <div>
           <div className="flex items-end justify-between">
@@ -142,8 +142,8 @@ export default function AsideServices({ tAside }: { tAside: any }) {
               <div className="flex items-center">
                 <Avvvatars value={session.user?.email as string} size={36} />
                 <div className="ml-2 -space-y-1">
-                  <p>{session?.user?.name}</p>
-                  <p className="text-slate-500 text-sm">
+                  <p className="text-sm lg:text-base">{session?.user?.name}</p>
+                  <p className="text-slate-500 text-xs lg:text-sm">
                     {session?.user?.email}
                   </p>
                 </div>

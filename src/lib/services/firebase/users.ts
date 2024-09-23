@@ -24,6 +24,8 @@ export const updatePoints = async (email: string, usedPoints: number) => {
         points: user.points - usedPoints,
       });
     }
+
+    return "Points updated successfully";
   } catch (error) {
     console.error("Error updating user points: " + error);
   }

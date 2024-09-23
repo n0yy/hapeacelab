@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -14,6 +15,7 @@ export default function Home() {
   return (
     <>
       <title>HLab AI</title>
+      <Navbar />
       <main>
         <section
           className="relative min-h-screen flex items-center justify-center"
