@@ -68,6 +68,7 @@ export default function Navbar() {
             <Dropdown
               arrowIcon={false}
               inline={true}
+              className="w-64 text-sm"
               label={
                 <Avvvatars value={session.user?.email as string} size={36} />
               }

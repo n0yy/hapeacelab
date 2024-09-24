@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     - Summary
     - Keywords (for each keyword use english and for the meaning use ${language})
     - Key Insights (for each key insight use english and for the meaning use ${language})
-    - Similar Articles or Paper (contains articles or papers similar to the file)
+    - Similar Articles or Paper (make sure the articles or paper is available and give the link)
     `;
 
     const result = await model.generateContent([
