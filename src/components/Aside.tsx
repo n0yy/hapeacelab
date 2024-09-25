@@ -9,6 +9,8 @@ import Avvvatars from "avvvatars-react";
 import { LuCoins } from "react-icons/lu";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { useState } from "react";
+import { useLocale } from "next-intl";
+import ActiveLink from "./ActiveLink";
 
 const fetcher = (url: string) =>
   fetch(url).then((res) => {
@@ -36,7 +38,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
   const [showAside, setShowAside] = useState<boolean>(false);
   const { data: session } = useSession();
   const pathname = usePathname();
-
+  const locale = useLocale();
   const serviceName = pathname?.split("/")[2];
 
   const { data: historyData, error: historyError } = useSWR<HistoryData>(
@@ -100,7 +102,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
               </span>
             )}
           </div>
-          <div className="mt-7 flex flex-col space-y-1 text-slate-600">
+          <div className="mt-7 flex flex-col space-y-1">
             <Link href="/">{tAside("homeText")}</Link>
             <Link href="/#services">{tAside("servicesText")}</Link>
             <Link href="/#pricing">{tAside("pricingText")}</Link>
@@ -118,13 +120,13 @@ export default function AsideServices({ tAside }: { tAside: any }) {
             {histories.length > 0 ? (
               <div className="space-y-0 max-h-64 overflow-y-auto">
                 {histories.map((item: History) => (
-                  <Link
+                  <ActiveLink
                     key={item.id}
-                    href={`/services/${serviceName}/${item.id}`}
+                    href={`/${locale}/${serviceName}/${item.id}`}
                     className="text-slate-600 block overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:bg-slate-300 p-1.5 rounded"
                   >
                     {"> " + item.title || `History ${item.id}`}
-                  </Link>
+                  </ActiveLink>
                 ))}
               </div>
             ) : (

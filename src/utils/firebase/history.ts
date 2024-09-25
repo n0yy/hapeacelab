@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   serverTimestamp,
   setDoc,
@@ -34,4 +35,25 @@ export async function getHistories(userEmail: string, service: string) {
   );
   const querySnapshot = await getDocs(historyCollectionRef);
   return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+}
+
+export async function getHistory(
+  userEmail: string,
+  service: string,
+  uuid: string
+) {
+  const historyDocRef = doc(
+    db,
+    "users",
+    userEmail,
+    "histories",
+    service,
+    "entries",
+    uuid
+  );
+
+  const docSnapshot = await getDoc(historyDocRef);
+
+  console.log(docSnapshot);
+  return docSnapshot.data();
 }

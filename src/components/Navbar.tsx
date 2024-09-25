@@ -6,7 +6,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import Avvvatars from "avvvatars-react";
 import { LuCoins, LuGlobe } from "react-icons/lu";
-import { Dropdown, DropdownItem } from "flowbite-react";
+import { Dropdown, Accordion } from "flowbite-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 interface User {
