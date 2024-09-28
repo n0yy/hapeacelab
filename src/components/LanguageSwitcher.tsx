@@ -9,28 +9,35 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
   const locale = useLocale();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLocale = e.target.value;
+  const handleChange = (newLocale: string) => {
     // Remove the current locale from the pathname
     const newPathname = pathname.replace(`/${locale}`, "");
     router.push(`/${newLocale}${newPathname}`);
   };
 
+  const languages = [
+    { code: "en", label: "EN" },
+    { code: "id", label: "ID" },
+  ];
+
   return (
-    <div className="flex scale-90 items-center space-x-0">
-      <label htmlFor="language">
-        <LuGlobe size={24} className="text-slate-700" />
-      </label>
-      <select
-        name="language"
-        id="language"
-        className="-ml-5 bg-transparent border-none focus:outline-none focus:ring-0"
-        onChange={handleChange}
-        value={locale}
-      >
-        <option value="en">English</option>
-        <option value="id">Indonesia</option>
-      </select>
+    <div className="flex items-center space-x-2 justify-between w-full">
+      <LuGlobe size={24} className="text-slate-700" />
+      <div className="space-x-2">
+        {languages.map((lang) => (
+          <button
+            key={lang.code}
+            onClick={() => handleChange(lang.code)}
+            className={`px-2 py-1 text-sm font-medium rounded-md transition-colors ${
+              locale === lang.code
+                ? "bg-black text-white"
+                : "outline outline-[1px] hover:bg-black hover:text-white"
+            }`}
+          >
+            {lang.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

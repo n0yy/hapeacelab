@@ -17,7 +17,7 @@
         "description": "Create product descriptions instantly from an image, making it effortless for sellers to generate clear content."
       },
       "lectureBrief": {
-        "title": "LectureBrief",
+        "title": "LecturerBrief",
         "description": "Summarize lectures instantly, providing clear and concise insights to help students quickly grasp key points."
       },
       "potensionality": {
@@ -82,7 +82,7 @@
     "points": "You need 10 point to do it!"
   },
   "LectureBrief": {
-    "title": "Lecture Brief",
+    "title": "Lecturer Brief",
     "description": "Simplify lecture content into essential takeaways. Lecturer Summarizer condenses academic lectures into clear summaries, perfect for students who need quick and efficient study aids.",
     "language": "Select output language",
     "points": "You need 15 point to do it!"

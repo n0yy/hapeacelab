@@ -17,7 +17,7 @@
         "description": "Buat deskripsi produk langsung dari gambar. Cocok banget buat penjual yang mau deskripsi produk yang keren tanpa ribet."
       },
       "lectureBrief": {
-        "title": "LectureBrief",
+        "title": "LecturerBrief",
         "description": "Ringkas materi kuliah secara instan, bantu mahasiswa cepat ngerti poin-poin penting."
       },
       "potensionality": {
@@ -72,7 +72,7 @@
     "points": "Kamu perlu 10 poin buat fitur ini!"
   },
   "LectureBrief": {
-    "title": "Lecture Brief",
+    "title": "Lecturer Brief",
     "description": "Bikin ringkasan materi kuliah jadi lebih simpel dan mudah dimengerti. Cocok buat mahasiswa yang butuh alat belajar cepat dan efisien.",
     "language": "Pilih Bahasa",
     "points": "Kamu perlu 15 poin buat fitur ini!"

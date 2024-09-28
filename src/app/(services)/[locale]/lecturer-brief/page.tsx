@@ -63,7 +63,6 @@ export default function LecturerBriefPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!session) {
       router.push("/login");
       return;

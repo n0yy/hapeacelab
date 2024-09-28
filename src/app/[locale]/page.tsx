@@ -89,7 +89,7 @@ export default function Home() {
         {/* End Services */}
 
         {/* Pricing */}
-        <section id="pricing" className="mt-32 mx-10 md:mx-56">
+        {/* <section id="pricing" className="mt-32 mx-10 md:mx-56">
           <header className="mb-10 text-center">
             <h3 className="text-2xl font-semibold ">{t("pricing.title")}</h3>
             <h4 className="text-sm md:text-base">{t("pricing.subtitle")}</h4>
@@ -113,7 +113,7 @@ export default function Home() {
               price={t("pricing.upper.price")}
             />
           </div>
-        </section>
+        </section> */}
         {/* End Pricing */}
 
         {/* Footer */}

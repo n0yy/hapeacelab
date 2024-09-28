@@ -59,10 +59,9 @@ export default function Navbar() {
       <div className="space-x-8 text-slate-600 font-light hidden lg:block">
         <Link href="/">Home</Link>
         <Link href="#services">Services</Link>
-        <Link href="#pricing">Pricing</Link>
+        {/* <Link href="#pricing">Pricing</Link> */}
       </div>
       <div className="flex items-center space-x-3 md:space-x-10">
-        <LanguageSwitcher />
         {session ? (
           <span className="cursor-pointer" onClick={handleAvatar}>
             <Dropdown
@@ -73,6 +72,9 @@ export default function Navbar() {
                 <Avvvatars value={session.user?.email as string} size={36} />
               }
             >
+              <Dropdown.Item className="hover:bg-white">
+                <LanguageSwitcher />
+              </Dropdown.Item>
               <Dropdown.Item onClick={() => signOut()}>Logout</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item>

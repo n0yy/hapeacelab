@@ -105,7 +105,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
           <div className="mt-7 flex flex-col space-y-1">
             <Link href="/">{tAside("homeText")}</Link>
             <Link href="/#services">{tAside("servicesText")}</Link>
-            <Link href="/#pricing">{tAside("pricingText")}</Link>
+            {/* <Link href="/#pricing">{tAside("pricingText")}</Link> */}
           </div>
           <div className="mt-5 max-w-64">
             <h3 className="text-lg mb-1 font-semibold text-slate-800">

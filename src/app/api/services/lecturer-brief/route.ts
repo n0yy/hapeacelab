@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Imagine your are a Professor. Create summary. Use Feynman Technique. create 5 related questions to sharpen insight. generate in ${language} for the output.
+    const prompt = `Create summary with Feynman Technique to explain in ${file.name}. create 3 related questions to sharpen insight. generate in ${language} for the output. The summary should be have a title. Don't tell if this using Feynman Technique.
     `;
 
     const result = await model.generateContent([
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // Store History
     await saveHistory(email, "lecturer-brief", {
-      generated: text,
+      content: text,
       language,
       file: uploadResponse.file,
       title: text.match(/##\s*(.*?)\n/)?.[1] || "Untitled",
