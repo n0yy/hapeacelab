@@ -16,8 +16,6 @@ export default function DetailHistory({ params }: any) {
 
   const tAside = useTranslations("Aside");
 
-  console.log(serviceName, uuid);
-
   useEffect(() => {
     if (status === "authenticated" && session?.user?.email) {
       const fetchHistory = async () => {
@@ -37,13 +35,12 @@ export default function DetailHistory({ params }: any) {
       fetchHistory();
     }
   }, [session, uuid, status]);
-
   return (
     <>
       <title>{history?.title}</title>
 
       <AsideServices tAside={tAside} />
-      <article className="prose text-justify py-20 -mt-10 md:mt-0 ml-0 md:ml-40 px-10 lg:mx-0">
+      <article className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto my-10">
         <ReactMarkdown>{history?.content}</ReactMarkdown>
       </article>
     </>

@@ -23,14 +23,15 @@ export async function POST(request: NextRequest) {
 
     const result = await model.generateContent([prompt, imagePart]);
     const text = result.response.text();
+    const cleanText = text.replace(/^[\s\S]*?(?=##)/, "");
 
     await saveHistory(userEmail, "describe-it", {
-      content: text,
+      content: cleanText,
       language,
       title: productName,
     });
 
-    return NextResponse.json({ success: true, text });
+    return NextResponse.json({ success: true, cleanText });
   } catch (error: any) {
     if (error.message.includes("SAFETY")) {
       return NextResponse.json({
