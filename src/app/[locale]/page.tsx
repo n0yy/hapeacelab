@@ -37,15 +37,6 @@ export default function Home() {
             <p className="mb-6 text-slate-700 tracking-wider text-sm md:text-base px-8 md:px-0">
               {t("description")}
             </p>
-
-            {!session && (
-              <Link
-                href="/login"
-                className="bg-primary shadow-neo px-8 py-2 rounded-md font-medium cursor-pointer"
-              >
-                {t("tryItNow")}
-              </Link>
-            )}
           </div>
         </section>
 

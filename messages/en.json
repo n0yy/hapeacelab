@@ -101,5 +101,14 @@
     "withApple": "Continue with Apple",
     "backHome": "back to home",
     "or": "OR"
+  },
+  "Navbar": {
+    "home": "Home",
+    "services": "Services",
+    "feedback": "Feedback",
+    "feedbackButton": "Send Feedback",
+    "isSendFeedback": "Your feedback has been sent. Thank you! ✌️🥰",
+    "back": "back",
+    "titleFeedback": "Sent your feedback to HLab Team 💬"
   }
 }

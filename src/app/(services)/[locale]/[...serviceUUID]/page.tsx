@@ -34,7 +34,7 @@ export default function DetailHistory({ params }: any) {
 
       fetchHistory();
     }
-  }, [session, uuid, status]);
+  }, []);
   return (
     <>
       <title>{history?.title}</title>

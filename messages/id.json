@@ -91,5 +91,14 @@
     "withApple": "Lanjutkan dengan Apple",
     "backHome": "kembali ke beranda",
     "or": "ATAU"
+  },
+  "Navbar": {
+    "home": "Beranda",
+    "services": "Layanan",
+    "feedback": "Feedback",
+    "feedbackButton": "Kirim Feedback",
+    "isSendFeedback": "Feedback Kamu udah dikirim. Terima Kasih! ✌️🥰",
+    "back": "kembali",
+    "titleFeedback": "Kirim Feedback ke HLab Team 💬"
   }
 }
