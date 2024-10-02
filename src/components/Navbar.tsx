@@ -16,7 +16,7 @@ interface User {
   name?: string | null | undefined;
   email?: string | null | undefined;
   image?: string | null | undefined;
-  points?: number; // add the points property
+  points?: number;
 }
 
 export default function Navbar() {
