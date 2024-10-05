@@ -3,8 +3,6 @@ import { model, fileManager } from "@/utils/genai";
 import { writeFile, unlink } from "fs/promises";
 import { join } from "path";
 import os from "os";
-import { db } from "@/utils/firebase/config";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { saveHistory } from "@/utils/firebase/history";
 
 export async function POST(request: NextRequest) {
