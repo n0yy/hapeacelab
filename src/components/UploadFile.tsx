@@ -1,23 +1,28 @@
 import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { Accept } from "react-dropzone";
+import { useDropzone, Accept } from "react-dropzone";
 
-export default function UploadFile(props: {
+interface UploadFileProps {
   acceptedFile: Accept | string;
-  handleSubmit: any;
-  file: any;
-  setFile: any;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  file: File | null;
+  setFile: (file: File | null) => void;
   needPoints: string;
   isPDF: boolean;
-}) {
-  const { acceptedFile, handleSubmit, file, setFile, needPoints, isPDF } =
-    props;
+}
 
+export default function UploadFile({
+  acceptedFile,
+  handleSubmit,
+  file,
+  setFile,
+  needPoints,
+  isPDF,
+}: UploadFileProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       const selectedFile = acceptedFiles[0];
       if (selectedFile) {
-        const fileSizeInMB = selectedFile.size / (1024 * 1024); // Convert bytes to MB
+        const fileSizeInMB = selectedFile.size / (1024 * 1024);
         if (fileSizeInMB > 4) {
           alert("File size exceeds 4MB. Please upload a smaller file.");
           return;
@@ -30,7 +35,11 @@ export default function UploadFile(props: {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: acceptedFile as Accept,
+    accept: isPDF
+      ? { "application/pdf": [".pdf"] }
+      : typeof acceptedFile === "string"
+      ? { [acceptedFile]: [] }
+      : acceptedFile,
     maxSize: 4 * 1024 * 1024, // 4MB
   });
 
@@ -70,7 +79,11 @@ export default function UploadFile(props: {
             <p className="mb-2 text-xs text-gray-500">Maximum size is 4MB</p>
           )}
           <p className="text-xs text-gray-700">
-            {file ? file.name : acceptedFile}
+            {file
+              ? file.name
+              : typeof acceptedFile === "string"
+              ? acceptedFile
+              : Object.keys(acceptedFile).join(", ")}
           </p>
         </div>
       </div>
