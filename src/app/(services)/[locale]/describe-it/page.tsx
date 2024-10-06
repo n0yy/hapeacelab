@@ -26,7 +26,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export default function DescribeIt() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [content, setContent] = useState<string | null>(null);
   const [productName, setProductName] = useState<string>("");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");

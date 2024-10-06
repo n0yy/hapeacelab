@@ -77,6 +77,11 @@
     "language": "Pilih Bahasa",
     "points": "Kamu perlu 15 poin buat fitur ini!"
   },
+  "CVRoaster": {
+    "title": "CV Roaster",
+    "description": "CV Roaster bakal kasih kamu feedback yang apa adanya buat ningkatin CV kamu ke level berikutnya. Fitur ini nggak cuma nunjukin apa aja yang udah bagus dari CV-mu, tapi juga bakal ngasih tahu apa yang bisa diperbaiki. Dengan masukan yang jujur ini, kamu bisa lebih siap dan percaya diri buat ngelamar kerja yang kamu incar.\n**#### Warning!!**\nFitur ini mungkin bisa bikin kamu kesel atau bahkan marah, karena feedback-nya cukup blak-blakan. Jadi, santai aja dan jangan baper, ya! ✌️🤞",
+    "points": "You need 70 point to do it!"
+  },
   "Aside": {
     "homeText": "Beranda",
     "servicesText": "Layanan",

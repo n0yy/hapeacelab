@@ -87,6 +87,11 @@
     "language": "Select output language",
     "points": "You need 15 point to do it!"
   },
+  "CVRoaster": {
+    "title": "CV Roaster",
+    "description": "CV Roaster takes your resume to the next level by providing candid feedback on areas for improvement. It highlights strengths and weaknesses, offering insights to help refine your CV for better job prospects.\n**#### Warning!!**\nThis feature may frustrate or anger you. So, don't take it personally!",
+    "points": "You need 70 point to do it!"
+  },
   "Aside": {
     "homeText": "Home",
     "servicesText": "Services",

@@ -3,6 +3,9 @@
 import useSWR, { mutate } from "swr";
 import UploadFile from "@/components/UploadFile";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import Loading from "../loading";
+import { useTranslations } from "next-intl";
 import AsideServices from "@/components/Aside";
 
 interface RoasterResponse {
@@ -12,8 +15,9 @@ interface RoasterResponse {
 
 export default function CVRoaster() {
   const [file, setFile] = useState<File | null>(null);
-
-  const { data, error } = useSWR<RoasterResponse>(
+  const t = useTranslations("CVRoaster");
+  const tAside = useTranslations("Aside");
+  const { data, isLoading, error } = useSWR<RoasterResponse>(
     file ? "/api/services/cv-roaster" : null,
     null
   );
@@ -51,30 +55,25 @@ export default function CVRoaster() {
   return (
     <>
       <title>CV Roaster</title>
+      <AsideServices tAside={tAside} />
       <main className="prose-sm text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-5">CV Roaster</h1>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis
-            reiciendis rem mollitia tenetur vitae facere earum nemo, veritatis
-            culpa magnam?
-          </p>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto,
-            recusandae.
-          </p>
+          <h1 className="text-3xl font-bold mb-5">{t("title")}</h1>
+          <ReactMarkdown>{t("description")}</ReactMarkdown>
         </div>
         <UploadFile
           acceptedFile=".pdf"
           handleSubmit={handleFile}
           file={file}
           setFile={setFile}
-          needPoints="70"
+          needPoints={t("points")}
           isPDF
         />
 
         {error && <p className="text-red-500">Error: {error.message}</p>}
-        {data && <div className="mt-4">{data.content}</div>}
+
+        {isLoading && <Loading />}
+        {data && <ReactMarkdown>{data.content}</ReactMarkdown>}
       </main>
     </>
   );
