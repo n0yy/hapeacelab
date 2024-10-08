@@ -5,6 +5,8 @@ import { generateText } from "ai";
 import { join } from "path";
 import os from "os";
 import { writeFile, unlink } from "fs/promises";
+import { updatePoints } from "@/lib/services/firebase/users";
+import { saveHistory } from "@/utils/firebase/history";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +22,7 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
+    const userEmail = formData.get("userEmail") as string;
 
     if (!file) {
       return NextResponse.json(
@@ -77,15 +80,17 @@ export async function POST(req: NextRequest) {
             category: "HARM_CATEGORY_HATE_SPEECH",
             threshold: "BLOCK_NONE",
           },
-          {
-            category: "HARM_CATEGORY_HARASSMENT",
-            threshold: "BLOCK_NONE",
-          },
         ],
       }),
-      prompt: `${extractedText}\nRoasting cv tersebut menggunakan bahasa yang menyinggung, kasar dan gaul (lu, gue, gk, kaga dll), tambahin kira kira dapet skor ATS berapa (secara objektif)? tambahin juga emoji biar makin kena mental. bikin judul/title contohnya (# Danang Si Paling ML Engineer 😌) output dalam bahasa Indonesia. diakhir tambahin Saran (Advice) apa aja yang harus diperbaiki`,
+      prompt: `${extractedText}\nRoasting cv tersebut menggunakan bahasa yang menyinggung, kasar dan gaul (lu, gue, gk, kaga dll), tambahin kira kira dapet skor ATS berapa (secara objektif)? tambahin juga emoji biar makin kena mental. bikin judul/title dengan prefix ##. output dalam bahasa Indonesia. diakhir tambahin Saran (Advice) apa aja yang harus diperbaiki`,
     });
 
+    await updatePoints(userEmail, 100);
+    await saveHistory(userEmail, "cv-roaster", {
+      content: text,
+      title: text.match(/##\s*(.*?)\n/)?.[1] || "Untitled",
+      createdAt: Date.now(),
+    });
     return NextResponse.json({ content: text }, { status: 200 });
   } catch (error) {
     console.error("Error processing request:", error);

@@ -4,9 +4,11 @@ import useSWR, { mutate } from "swr";
 import UploadFile from "@/components/UploadFile";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import Loading from "../loading";
 import { useTranslations } from "next-intl";
 import AsideServices from "@/components/Aside";
+import { useSession } from "next-auth/react";
+import StreamingText from "@/components/StreamingText";
+import { EosIconsThreeDotsLoading } from "@/components/Loading";
 
 interface RoasterResponse {
   content: string;
@@ -15,9 +17,13 @@ interface RoasterResponse {
 
 export default function CVRoaster() {
   const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isStreamingFinished, setIsStreamingFinished] =
+    useState<boolean>(false);
+  const { data: session } = useSession();
   const t = useTranslations("CVRoaster");
   const tAside = useTranslations("Aside");
-  const { data, isLoading, error } = useSWR<RoasterResponse>(
+  const { data, error } = useSWR<RoasterResponse>(
     file ? "/api/services/cv-roaster" : null,
     null
   );
@@ -32,8 +38,10 @@ export default function CVRoaster() {
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("userEmail", session?.user?.email as string);
 
     try {
+      setIsLoading(true);
       const response = await fetch("/api/services/cv-roaster", {
         method: "POST",
         body: formData,
@@ -47,16 +55,21 @@ export default function CVRoaster() {
 
       // Update the SWR cache with the new data
       mutate("/api/services/cv-roaster", responseData, false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error processing file: ", error);
     }
+  };
+
+  const handleStreamingFinished = () => {
+    setIsStreamingFinished(true);
   };
 
   return (
     <>
       <title>CV Roaster</title>
       <AsideServices tAside={tAside} />
-      <main className="prose-sm text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10">
+      <main className="prose-sm text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
         <div className="mb-10">
           <h1 className="text-3xl font-bold mb-5">{t("title")}</h1>
           <ReactMarkdown>{t("description")}</ReactMarkdown>
@@ -72,8 +85,22 @@ export default function CVRoaster() {
 
         {error && <p className="text-red-500">Error: {error.message}</p>}
 
-        {isLoading && <Loading />}
-        {data && <ReactMarkdown>{data.content}</ReactMarkdown>}
+        {isLoading && (
+          <div className="text-center my-10 flex items-center justify-center space-x-1">
+            <span>Thinking</span> <EosIconsThreeDotsLoading />
+          </div>
+        )}
+        {data && (
+          <StreamingText
+            content={data.content}
+            onStreamingComplete={handleStreamingFinished}
+          />
+        )}
+
+        {/* Tambahan element */}
+        {isStreamingFinished && (
+          <button className="font-semibold underline">Sini gua bantu..</button>
+        )}
       </main>
     </>
   );

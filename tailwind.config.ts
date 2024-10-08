@@ -17,6 +17,15 @@ const config: Config = {
       boxShadow: {
         neo: "13px 13px 25px #D1D6E6, -13px -13px 25px #FFFFFF",
       },
+      animation: {
+        blink: "blink 1s step-start infinite",
+      },
+      keyframes: {
+        blink: {
+          "0%, 100%": { opacity: "0" },
+          "50%": { opacity: "1" },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/typography"), flowbite.plugin()],
