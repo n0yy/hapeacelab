@@ -1,20 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import PDFParser from "pdf2json";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText } from "ai";
-import { join } from "path";
-import os from "os";
-import { writeFile, unlink } from "fs/promises";
+import { unlink } from "fs/promises";
 import { updatePoints } from "@/lib/services/firebase/users";
 import { saveHistory } from "@/utils/firebase/history";
+import parsePDF from "@/utils/parsePdf";
 
-export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-interface PDFParserError {
-  parserError: unknown;
-  // tambahkan properti lain yang mungkin ada di error object
-}
 
 export async function POST(req: NextRequest) {
   let tempFilePath: string | null = null;
@@ -42,32 +34,7 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Create a unique temporary file name
-    const uniqueFilename = `${Date.now()}-${file.name}`;
-    tempFilePath = join(os.tmpdir(), uniqueFilename);
-
-    await writeFile(tempFilePath, buffer);
-
-    const pdfParser = new PDFParser(null, true);
-
-    const extractedText = await new Promise<string>((resolve, reject) => {
-      pdfParser.on("pdfParser_dataReady", (pdfData) => {
-        const text = pdfParser.getRawTextContent();
-        resolve(text);
-      });
-
-      pdfParser.on("pdfParser_dataError", (errData: PDFParserError) => {
-        const errorMessage =
-          errData.parserError?.toString() || "PDF parsing failed";
-        reject(new Error(errorMessage));
-      });
-
-      if (tempFilePath !== null) {
-        pdfParser.loadPDF(tempFilePath);
-      } else {
-        throw new Error("Temporary file path is null");
-      }
-    });
+    const extractedText = await parsePDF(buffer, file.name);
 
     const google = createGoogleGenerativeAI({
       apiKey: process.env.GEMINI_API_KEY,

@@ -15,17 +15,28 @@ interface RoasterResponse {
   status: number;
 }
 
+interface EnhancedResponse {
+  content: string;
+  status: number;
+}
+
 export default function CVRoaster() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isStreamingFinished, setIsStreamingFinished] =
     useState<boolean>(false);
+  const [isEnhancedStreamingFinished, setIsEnhancedStreamingFinished] =
+    useState<boolean>(false);
   const { data: session } = useSession();
   const t = useTranslations("CVRoaster");
   const tAside = useTranslations("Aside");
+
   const { data, error } = useSWR<RoasterResponse>(
-    file ? "/api/services/cv-roaster" : null,
-    null
+    file ? "/api/services/cv-roaster" : null
+  );
+
+  const { data: enhancedData, error: enhancedError } = useSWR<EnhancedResponse>(
+    file ? "/api/services/enhance-cv" : null
   );
 
   const handleFile = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,9 +47,14 @@ export default function CVRoaster() {
       return;
     }
 
+    if (!session?.user?.email) {
+      alert("Please sign in to use this service.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("userEmail", session?.user?.email as string);
+    formData.append("userEmail", session.user.email);
 
     try {
       setIsLoading(true);
@@ -48,21 +64,55 @@ export default function CVRoaster() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to process file");
+        throw new Error(`Failed to process file: ${response.statusText}`);
       }
 
       const responseData = await response.json();
-
-      // Update the SWR cache with the new data
       mutate("/api/services/cv-roaster", responseData, false);
-      setIsLoading(false);
     } catch (error) {
       console.error("Error processing file: ", error);
+      alert("Failed to process file. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleStreamingFinished = () => {
     setIsStreamingFinished(true);
+  };
+
+  const handleEnhancedStreamingFinished = () => {
+    setIsEnhancedStreamingFinished(true);
+  };
+
+  const handleEnhanceCV = async () => {
+    if (!data?.content) {
+      alert("No CV content to enhance.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/services/enhance-cv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ roastedText: data.content }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to enhance CV: ${response.statusText}`);
+      }
+
+      const enhancedCV = await response.json();
+      mutate("/api/services/enhance-cv", enhancedCV, false);
+    } catch (error) {
+      console.error("Error enhancing CV: ", error);
+      alert("Failed to enhance CV. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -84,22 +134,43 @@ export default function CVRoaster() {
         />
 
         {error && <p className="text-red-500">Error: {error.message}</p>}
+        {enhancedError && (
+          <p className="text-red-500">
+            Error enhancing CV: {enhancedError.message}
+          </p>
+        )}
 
         {isLoading && (
           <div className="text-center my-10 flex items-center justify-center space-x-1">
-            <span>Thinking</span> <EosIconsThreeDotsLoading />
+            <span>Processing</span> <EosIconsThreeDotsLoading />
           </div>
         )}
+
         {data && (
-          <StreamingText
-            content={data.content}
-            onStreamingComplete={handleStreamingFinished}
-          />
+          <div className="mt-6">
+            <StreamingText
+              content={data.content}
+              onStreamingComplete={handleStreamingFinished}
+            />
+          </div>
         )}
 
-        {/* Tambahan element */}
-        {isStreamingFinished && (
-          <button className="font-semibold underline">Sini gua bantu..</button>
+        {isStreamingFinished && !enhancedData && (
+          <button
+            className="mt-4 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-900 transition-colors"
+            onClick={handleEnhanceCV}
+          >
+            Sini gua bantuin..
+          </button>
+        )}
+
+        {enhancedData && (
+          <div className="mt-6">
+            <StreamingText
+              content={enhancedData.content}
+              onStreamingComplete={handleEnhancedStreamingFinished}
+            />
+          </div>
         )}
       </main>
     </>
