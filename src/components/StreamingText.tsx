@@ -42,9 +42,7 @@ export default function StreamingText(props: StreamingTextProps) {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}
       >
-        {`${text}${
-          !hasStreamed ? `<span className="animate-blink"> |</span>` : ""
-        }`}
+        {`${text}${'<span className="animate-blink"> |</span>'}`}
       </ReactMarkdown>
     </div>
   );

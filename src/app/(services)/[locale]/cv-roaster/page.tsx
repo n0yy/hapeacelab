@@ -9,6 +9,7 @@ import AsideServices from "@/components/Aside";
 import { useSession } from "next-auth/react";
 import StreamingText from "@/components/StreamingText";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
+import { v4 as uuid } from "uuid";
 
 interface RoasterResponse {
   content: string;
@@ -23,10 +24,11 @@ interface EnhancedResponse {
 export default function CVRoaster() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingEnhance, setIsLoadingEnhance] = useState<boolean>(false);
+  const [displayedContent, setDisplayedContent] = useState<string | null>(null);
   const [isStreamingFinished, setIsStreamingFinished] =
     useState<boolean>(false);
-  const [isEnhancedStreamingFinished, setIsEnhancedStreamingFinished] =
-    useState<boolean>(false);
+  const [isEnhanced, setIsEnhanced] = useState<boolean>(false);
   const { data: session } = useSession();
   const t = useTranslations("CVRoaster");
   const tAside = useTranslations("Aside");
@@ -55,8 +57,10 @@ export default function CVRoaster() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("userEmail", session.user.email);
+    formData.append("uuid", uuid());
 
     try {
+      setDisplayedContent(null);
       setIsLoading(true);
       const response = await fetch("/api/services/cv-roaster", {
         method: "POST",
@@ -68,6 +72,8 @@ export default function CVRoaster() {
       }
 
       const responseData = await response.json();
+      setDisplayedContent(responseData.content);
+      setIsEnhanced(false);
       mutate("/api/services/cv-roaster", responseData, false);
     } catch (error) {
       console.error("Error processing file: ", error);
@@ -81,10 +87,6 @@ export default function CVRoaster() {
     setIsStreamingFinished(true);
   };
 
-  const handleEnhancedStreamingFinished = () => {
-    setIsEnhancedStreamingFinished(true);
-  };
-
   const handleEnhanceCV = async () => {
     if (!data?.content) {
       alert("No CV content to enhance.");
@@ -92,7 +94,9 @@ export default function CVRoaster() {
     }
 
     try {
-      setIsLoading(true);
+      setIsLoadingEnhance(true);
+      setDisplayedContent(null);
+      setIsStreamingFinished(false);
       const response = await fetch("/api/services/enhance-cv", {
         method: "POST",
         headers: {
@@ -106,12 +110,15 @@ export default function CVRoaster() {
       }
 
       const enhancedCV = await response.json();
+      console.log(enhancedCV.content);
+      setDisplayedContent(enhancedCV.content);
+      setIsEnhanced(true);
       mutate("/api/services/enhance-cv", enhancedCV, false);
     } catch (error) {
       console.error("Error enhancing CV: ", error);
       alert("Failed to enhance CV. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsLoadingEnhance(false);
     }
   };
 
@@ -140,37 +147,29 @@ export default function CVRoaster() {
           </p>
         )}
 
-        {isLoading && (
+        {(isLoading || isLoadingEnhance) && (
           <div className="text-center my-10 flex items-center justify-center space-x-1">
-            <span>Processing</span> <EosIconsThreeDotsLoading />
+            <span>{isLoadingEnhance ? "Bentar, mikir dulu" : "Hhmmm"}</span>
+            <EosIconsThreeDotsLoading />
           </div>
         )}
 
-        {data && (
+        {displayedContent && (
           <div className="mt-6">
             <StreamingText
-              content={data.content}
+              content={displayedContent}
               onStreamingComplete={handleStreamingFinished}
             />
           </div>
         )}
 
-        {isStreamingFinished && !enhancedData && (
+        {isStreamingFinished && !isEnhanced && (
           <button
             className="mt-4 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-900 transition-colors"
             onClick={handleEnhanceCV}
           >
             Sini gua bantuin..
           </button>
-        )}
-
-        {enhancedData && (
-          <div className="mt-6">
-            <StreamingText
-              content={enhancedData.content}
-              onStreamingComplete={handleEnhancedStreamingFinished}
-            />
-          </div>
         )}
       </main>
     </>

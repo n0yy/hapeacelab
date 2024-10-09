@@ -70,10 +70,9 @@ export default function Home() {
             />
             <Services
               urlIcon="/potensionality.png"
-              title={t("services.potensionality.title")}
-              desc={t("services.potensionality.description")}
-              url={`${locale}/potensionality`}
-              isUpcoming={true}
+              title={t("services.cvRoaster.title")}
+              desc={t("services.cvRoaster.description")}
+              url={`${locale}/cv-roaster`}
             />
           </div>
         </section>
