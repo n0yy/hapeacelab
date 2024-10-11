@@ -2,7 +2,7 @@
 
 import useSWR, { mutate } from "swr";
 import UploadFile from "@/components/UploadFile";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useTranslations } from "next-intl";
 import AsideServices from "@/components/Aside";
@@ -10,6 +10,9 @@ import { useSession } from "next-auth/react";
 import StreamingText from "@/components/StreamingText";
 import { EosIconsThreeDotsLoading } from "@/components/Loading";
 import { v4 as uuid } from "uuid";
+import { updatePoints } from "@/lib/services/firebase/users";
+import { FaPaperPlane } from "react-icons/fa";
+import { text } from "stream/consumers";
 
 interface RoasterResponse {
   content: string;
@@ -22,8 +25,12 @@ interface EnhancedResponse {
 }
 
 export default function CVRoaster() {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [id, setId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPrompt, setShowPrompt] = useState<boolean>(false);
+  const [additionalPrompt, setAdditionalPrompt] = useState<string>("");
   const [isLoadingEnhance, setIsLoadingEnhance] = useState<boolean>(false);
   const [displayedContent, setDisplayedContent] = useState<string | null>(null);
   const [isStreamingFinished, setIsStreamingFinished] =
@@ -54,10 +61,19 @@ export default function CVRoaster() {
       return;
     }
 
+    if (file.type !== "application/pdf") {
+      alert("Only PDF files are allowed.");
+      return;
+    }
+
+    setId(uuid());
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("userEmail", session.user.email);
-    formData.append("uuid", uuid());
+    if (id) {
+      formData.append("uuid", id);
+    }
 
     try {
       setDisplayedContent(null);
@@ -87,6 +103,10 @@ export default function CVRoaster() {
     setIsStreamingFinished(true);
   };
 
+  const handleEnhancePrompt = () => {
+    setShowPrompt(true);
+  };
+
   const handleEnhanceCV = async () => {
     if (!data?.content) {
       alert("No CV content to enhance.");
@@ -102,17 +122,25 @@ export default function CVRoaster() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ roastedText: data.content }),
+        body: JSON.stringify({
+          roastedText: data.content,
+          additionalPrompt: additionalPrompt,
+          uuid: id,
+        }),
       });
 
       if (!response.ok) {
         throw new Error(`Failed to enhance CV: ${response.statusText}`);
+      } else {
+        if (session?.user?.email) {
+          await updatePoints(session?.user?.email, 70);
+        }
       }
 
       const enhancedCV = await response.json();
-      console.log(enhancedCV.content);
       setDisplayedContent(enhancedCV.content);
       setIsEnhanced(true);
+      setShowPrompt(false);
       mutate("/api/services/enhance-cv", enhancedCV, false);
     } catch (error) {
       console.error("Error enhancing CV: ", error);
@@ -121,6 +149,13 @@ export default function CVRoaster() {
       setIsLoadingEnhance(false);
     }
   };
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
+    }
+  }, [additionalPrompt]);
 
   return (
     <>
@@ -164,12 +199,39 @@ export default function CVRoaster() {
         )}
 
         {isStreamingFinished && !isEnhanced && (
-          <button
-            className="mt-4 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-900 transition-colors"
-            onClick={handleEnhanceCV}
-          >
-            Sini gua bantuin..
-          </button>
+          <div className="mt-4">
+            {!showPrompt ? (
+              <button
+                className="text-black underline"
+                onClick={handleEnhancePrompt}
+              >
+                Sini gua bantuin..
+              </button>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
+                  className="w-full px-4 py-2 min-h-[40px] max-h-[200px] border-gray-600 focus:outline-none focus:border-gray-500 pr-12 rounded-lg"
+                  placeholder="Apa yang mau ditambahin bree?"
+                  value={additionalPrompt}
+                  onChange={(e) => {
+                    setAdditionalPrompt(e.target.value);
+                    if (textareaRef.current) {
+                      textareaRef.current.style.height = "auto";
+                      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+                    }
+                  }}
+                />
+                <button
+                  className="bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg p-2.5 text-white hover:text-white "
+                  onClick={handleEnhanceCV}
+                >
+                  <FaPaperPlane size={16} />
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </main>
     </>

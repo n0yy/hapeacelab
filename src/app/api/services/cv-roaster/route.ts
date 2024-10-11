@@ -69,7 +69,6 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   } finally {
-    // Clean up: delete the temporary file if it was created
     if (tempFilePath) {
       try {
         await unlink(tempFilePath);

@@ -11,3 +11,12 @@
     background-repeat: no-repeat;
     z-index: -99;
 }
+
+textarea {
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+  }
+  
+  textarea::-webkit-scrollbar {
+    display: none;  
+  }
