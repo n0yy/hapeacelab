@@ -1,7 +1,7 @@
 {
   "Home": {
     "experimental": "Eksperimen",
-    "greeting": "Hai {name} ✌️, ada yang bisa kami bantu hari ini?",
+    "greeting": "Halo {name} ✌️, ada yang bisa kita bantu hari ini?",
     "title": "AI-Powered Tools untuk Mempermudah Kerjaan Kamu.",
     "description": "Permudah pekerjaanmu dengan AI-Powered Tools kami. Biar kami yang urus hal-hal ribet, supaya kamu bisa fokus ke yang lebih penting.",
     "tryItNow": "Coba Sekarang!",
@@ -10,77 +10,73 @@
       "subtitle": "Dengan Model AI yang canggih, kita bisa dapetin hasil yang sesuai kebutuhan.",
       "condenseIt": {
         "title": "CondenseIt",
-        "description": "Ringkas makalah atau tulisan dengan cepat, hasilkan rangkuman yang jelas dan padat dalam hitungan detik."
+        "description": "Ringkas jurnal secepat kilat, bikin rangkuman simpel dalam sekejap."
       },
       "describeIt": {
         "title": "DescribeIt",
-        "description": "Buat deskripsi produk langsung dari gambar. Cocok banget buat penjual yang mau deskripsi produk yang keren tanpa ribet."
+        "description": "Bikin deskripsi produk langsung dari foto. Mantep buat yang jualan online, gak usah pusing mikirin kata-kata."
       },
       "lectureBrief": {
         "title": "LecturerBrief",
-        "description": "Ringkas materi kuliah secara instan, bantu mahasiswa cepat ngerti poin-poin penting."
+        "description": "Ringkas materi kuliah dalam sekejap, bikin lu cepet ngerti poin pentingnya."
       },
       "cvRoaster": {
         "title": "CV Roaster",
-        "description": "lorem ipsum dolor sit amet consectetur. Sollicitudin gravida tellus id nullam cum."
+        "description": "Bikin CV lu makin keren dan siap tempur buat ngelamar kerja."
       }
     },
     "pricing": {
-      "title": "Pilih Paket yang Pas Buat Kamu",
-      "subtitle": "Coba paket gratis kami dan dapatkan 150 poin. Kalau butuh lebih banyak poin, kamu bisa upgrade paket kapan aja.",
+      "title": "Pilih Paket Yang Cocok Buat Kantong Lu",
+      "subtitle": "Cobain dulu yang gratis, dapet 150 poin. Kalo kurang, gampang kok nambahnya.",
       "free": {
-        "title": "Gratis",
+        "title": "Gratisan",
         "features": [
-          "Layanan dasar untuk mulai coba-coba.",
-          "Dapatkan 150 poin saat daftar."
+          "Buat yang pengen coba-coba dulu.",
+          "Dapet 150 poin pas daftar."
         ],
-        "price": "Coba Gratis"
+        "price": "Gratis Coy!"
       },
       "lower": {
-        "title": "Lower",
-        "features": [
-          "Semua fitur dasar.",
-          "Dapatkan 550 poin.",
-          "Akses ke fitur Speech-to-Text dan CondenseIt."
-        ],
-        "price": "Rp 25.999"
+        "title": "Anak Kosan",
+        "features": ["Semua fitur dasar.", "Dapet 550 poin."],
+        "price": "Cuma 25 Ribu"
       },
       "upper": {
-        "title": "Upper",
-        "features": ["Akses semua fitur dan layanan.", "Dapatkan 1150 poin."],
-        "price": "Rp 49.500"
+        "title": "Anak Sultan",
+        "features": ["Semua fitur bisa dipake.", "Dapet 1150 poin."],
+        "price": "49 Ribu Aja"
       }
     },
     "footer": "@ 2024 Hapeacelab"
   },
   "CondenseIt": {
     "title": "CondenseIt",
-    "description": "Dengan CondenseIt, kamu bisa merangkum makalah atau paper panjang dengan cepat dan mudah. Cocok buat pelajar, peneliti, atau profesional yang butuh ringkasan singkat tapi jelas dalam hitungan detik.",
-    "language": "Pilih Bahasa",
-    "points": "Kamu perlu 30 poin buat pakai fitur ini!"
+    "description": "Pake CondenseIt, lu bisa ringkas tugas atau jurnal yang panjang banget jadi simpel. Cocok buat mahasiswa, peneliti, atau siapa aja yang butuh rangkuman cepet tapi jelas.",
+    "language": "Mau Pake Bahasa Apa?",
+    "points": "Lu butuh 30 poin buat pake fitur ini!"
   },
   "DescribeIt": {
     "title": "DescribeIt",
-    "description": "Cukup upload gambar, dan deskripsi produk akan otomatis dibuat. Mempermudah penjual online untuk bikin deskripsi produk yang menarik dan akurat dalam sekejap.",
+    "description": "Tinggal upload foto, langsung jadi deskripsi produk. Mantep buat yang jualan online, gak usah pusing bikin caption.",
     "warning": {
-      "title": "Tips untuk hasil terbaik:",
-      "first": "Pastikan gambar tidak miring.",
-      "second": "Hindari gambar yang buram."
+      "title": "Tips biar hasilnya yahud:",
+      "first": "Fotonya jangan miring-miring.",
+      "second": "Jangan pake foto blur."
     },
-    "language": "Pilih Bahasa",
-    "productName": "Nama Produk",
-    "points": "Kamu perlu 10 poin buat fitur ini!"
+    "language": "Mau Pake Bahasa Apa?",
+    "productName": "Nama Barangnya Apa?",
+    "points": "Lu butuh 10 poin buat fitur ini!"
   },
   "LectureBrief": {
     "title": "Lecturer Brief",
-    "description": "Bikin ringkasan materi kuliah jadi lebih simpel dan mudah dimengerti. Cocok buat mahasiswa yang butuh alat belajar cepat dan efisien.",
-    "language": "Pilih Bahasa",
-    "points": "Kamu perlu 15 poin buat fitur ini!"
+    "description": "Bikin rangkuman kuliah jadi gampang dicerna. Pas banget buat mahasiswa yang butuh cara belajar cepet dan efisien.",
+    "language": "Mau Pake Bahasa Apa?",
+    "points": "Lu butuh 15 poin buat fitur ini!"
   },
   "CVRoaster": {
     "title": "CV Roaster",
-    "description": "CV Roaster bakal kasih kamu feedback yang apa adanya buat ningkatin CV kamu ke level berikutnya. Fitur ini nggak cuma nunjukin apa aja yang udah bagus dari CV-mu, tapi juga bakal ngasih tahu apa yang bisa diperbaiki. Dengan masukan yang jujur ini, kamu bisa lebih siap dan percaya diri buat ngelamar kerja yang kamu incar.\n**#### Warning!!**\nFitur ini mungkin bisa bikin kamu kesel atau bahkan marah, karena feedback-nya cukup blak-blakan. Jadi, santai aja dan jangan baper, ya! ✌️🤞",
-    "points": "You need 70 point to do it!"
+    "description": "CV Roaster bakal kasih feedback blak-blakan buat bikin CV lu makin kece. Gak cuma *Roasting* doang, tapi juga ngasih tau apa yang perlu dibenerin. Jadi lu bisa lebih pede pas ngelamar kerja. Siap-siap aja, feedbacknya bisa bikin lu kesel atau bahkan emosi, soalnya jujur banget. Jadi santai aja ya, jangan baper! ✌️🤞",
+    "points": "Lu butuh 70 poin buat pake ini!"
   },
   "Aside": {
     "homeText": "Beranda",
@@ -90,20 +86,20 @@
   },
   "Login": {
     "title": "Login",
-    "subtitle": "Hai, Semoga harimu menyenangkan!",
-    "withGoogle": "Lanjutkan dengan Google",
-    "withFacebook": "Lanjutkan dengan Facebook",
-    "withApple": "Lanjutkan dengan Apple",
-    "backHome": "kembali ke beranda",
+    "subtitle": "Halo, semoga hari lu seru abis!",
+    "withGoogle": "Login pake Google",
+    "withFacebook": "Login pake Facebook",
+    "withApple": "Login pake Apple",
+    "backHome": "balik ke home",
     "or": "ATAU"
   },
   "Navbar": {
-    "home": "Beranda",
+    "home": "Home",
     "services": "Layanan",
     "feedback": "Feedback",
-    "feedbackButton": "Kirim Feedback",
-    "isSendFeedback": "Feedback Kamu udah dikirim. Terima Kasih! ✌️🥰",
-    "back": "kembali",
-    "titleFeedback": "Kirim Feedback ke HLab Team 💬"
+    "feedbackButton": "Kasih Feedback",
+    "isSendFeedback": "Feedback lu udah masuk. Makasih ya! ✌️🥰",
+    "back": "balik",
+    "titleFeedback": "Kasih Feedback ke Tim HLab 💬"
   }
 }

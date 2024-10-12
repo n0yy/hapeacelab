@@ -12,7 +12,6 @@ import { EosIconsThreeDotsLoading } from "@/components/Loading";
 import { v4 as uuid } from "uuid";
 import { updatePoints } from "@/lib/services/firebase/users";
 import { FaPaperPlane } from "react-icons/fa";
-import { text } from "stream/consumers";
 
 interface RoasterResponse {
   content: string;
@@ -23,6 +22,8 @@ interface EnhancedResponse {
   content: string;
   status: number;
 }
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function CVRoaster() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,12 +41,24 @@ export default function CVRoaster() {
   const t = useTranslations("CVRoaster");
   const tAside = useTranslations("Aside");
 
-  const { data, error } = useSWR<RoasterResponse>(
-    file ? "/api/services/cv-roaster" : null
+  const { data: roasterData, error: roasterError } = useSWR(
+    file ? ["/api/services/cv-roaster", file] : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 2000,
+      focusThrottleInterval: 5000,
+    }
   );
 
-  const { data: enhancedData, error: enhancedError } = useSWR<EnhancedResponse>(
-    file ? "/api/services/enhance-cv" : null
+  const { data: enhancedData, error: enhancedError } = useSWR(
+    file ? ["/api/services/enhance-cv", file] : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 2000,
+      focusThrottleInterval: 5000,
+    }
   );
 
   const handleFile = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,7 +121,7 @@ export default function CVRoaster() {
   };
 
   const handleEnhanceCV = async () => {
-    if (!data?.content) {
+    if (!roasterData?.content) {
       alert("No CV content to enhance.");
       return;
     }
@@ -123,7 +136,7 @@ export default function CVRoaster() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          roastedText: data.content,
+          roastedText: roasterData.content,
           additionalPrompt: additionalPrompt,
           uuid: id,
         }),
@@ -149,6 +162,7 @@ export default function CVRoaster() {
       setIsLoadingEnhance(false);
     }
   };
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -174,13 +188,6 @@ export default function CVRoaster() {
           needPoints={t("points")}
           isPDF
         />
-
-        {error && <p className="text-red-500">Error: {error.message}</p>}
-        {enhancedError && (
-          <p className="text-red-500">
-            Error enhancing CV: {enhancedError.message}
-          </p>
-        )}
 
         {(isLoading || isLoadingEnhance) && (
           <div className="text-center my-10 flex items-center justify-center space-x-1">
@@ -222,7 +229,7 @@ export default function CVRoaster() {
                       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
                     }
                   }}
-                />
+                ></textarea>
                 <button
                   className="bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg p-2.5 text-white hover:text-white "
                   onClick={handleEnhanceCV}
