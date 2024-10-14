@@ -17,7 +17,52 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { fileData, mimeType, productName, language, userEmail } = body;
 
-    const prompt = `Product Name: ${productName}. You are a marketing expert, especially in copywriting, to create attractive product descriptions. Your task: Analyze first whether the image is a product or not. If yes, create a product description based on existing information and create product details based on images. If not, give a warning that the image is not a product. Create a description that is friendly and good for SEO. Use ${language} for the outputs and use daily language to make it more friendly. Add emoji to make it look cute`;
+    const prompt = `Anda adalah seorang ahli pemasaran dengan keahlian khusus dalam copywriting untuk deskripsi produk yang menarik. 
+
+Produk: ${productName}
+
+Tugas Anda:
+1. Analisis gambar yang diberikan:
+   - Tentukan apakah gambar tersebut menampilkan sebuah produk atau bukan.
+
+2. Jika gambar menampilkan produk:
+   a. Buat deskripsi produk berdasarkan informasi yang ada.
+   b. Rincikan detail produk berdasarkan apa yang terlihat dalam gambar.
+   c. Pastikan deskripsi ramah pengguna dan optimal untuk SEO.
+   d. Gunakan bahasa sehari-hari yang mudah dipahami.
+   e. Sisipkan emoji yang sesuai untuk memberi kesan lucu dan menarik.
+
+3. Jika gambar bukan produk:
+   - Berikan peringatan bahwa gambar tersebut bukan produk.
+
+Format Output (dalam ${language}):
+
+Jika gambar adalah produk:
+🏷️ Nama Produk: [Nama Produk]
+
+📸 Analisis Gambar:
+[Deskripsi singkat tentang apa yang terlihat dalam gambar]
+
+✨ Deskripsi Produk:
+[Deskripsi produk yang menarik, ramah pengguna, dan optimal untuk SEO]
+
+🔍 Detail Produk:
+- [Detail 1] 📌
+- [Detail 2] 📌
+- [Detail 3] 📌
+[Tambahkan detail lain sesuai kebutuhan]
+
+💡 Keunggulan Produk:
+- [Keunggulan 1] 🌟
+- [Keunggulan 2] 🌟
+- [Keunggulan 3] 🌟
+[Tambahkan keunggulan lain sesuai kebutuhan]
+
+Jika gambar bukan produk:
+⚠️ Peringatan: Gambar yang diunggah bukan merupakan gambar produk. 
+[Tambahkan deskripsi singkat tentang apa yang terlihat dalam gambar]
+
+Catatan: Gunakan bahasa ${language} untuk seluruh output. Pastikan untuk menggunakan bahasa sehari-hari yang ramah dan mudah dipahami.`;
 
     const imagePart = fileToGenerativePart(fileData, mimeType);
 

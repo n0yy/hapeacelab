@@ -3,7 +3,6 @@
 import useSWR, { mutate } from "swr";
 import UploadFile from "@/components/UploadFile";
 import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { useTranslations } from "next-intl";
 import AsideServices from "@/components/Aside";
 import { useSession } from "next-auth/react";
@@ -12,16 +11,6 @@ import { EosIconsThreeDotsLoading } from "@/components/Loading";
 import { v4 as uuid } from "uuid";
 import { updatePoints } from "@/lib/services/firebase/users";
 import { FaPaperPlane } from "react-icons/fa";
-
-interface RoasterResponse {
-  content: string;
-  status: number;
-}
-
-interface EnhancedResponse {
-  content: string;
-  status: number;
-}
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -178,7 +167,7 @@ export default function CVRoaster() {
       <main className="prose-sm text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
         <div className="mb-10">
           <h1 className="text-3xl font-bold mb-5">{t("title")}</h1>
-          <ReactMarkdown>{t("description")}</ReactMarkdown>
+          <p>{t("description")}</p>
         </div>
         <UploadFile
           acceptedFile=".pdf"

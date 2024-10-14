@@ -2,9 +2,8 @@
   "Home": {
     "experimental": "Experimental",
     "greeting": "Hi {name} ✌️ how can we help you?",
-    "title": "AI-Powered Tools to Simplify Your Work.",
+    "title": "AI-Powered Tools by Hapeacelab.",
     "description": "Simplify your workflow with our AI-powered tools. Let us handle the heavy lifting, so you can focus on what matters most.",
-    "tryItNow": "Try it Now!",
     "services": {
       "title": "Our services built by strong model.",
       "subtitle": "With the strong model we can get what we need.",
@@ -89,7 +88,7 @@
   },
   "CVRoaster": {
     "title": "CV Roaster",
-    "description": "CV Roaster takes your resume to the next level by providing candid feedback on areas for improvement. It highlights strengths and weaknesses, offering insights to help refine your CV for better job prospects.<br/>**#### Warning!!**</br>This feature may frustrate or anger you. So, don't take it personally!",
+    "description": "CV Roaster takes your resume to the next level by providing candid feedback on areas for improvement. It highlights strengths and weaknesses, offering insights to help refine your CV for better job prospects. This feature may frustrate or anger you. So, don't take it personally!",
     "points": "You need 70 point to do it!"
   },
   "Aside": {

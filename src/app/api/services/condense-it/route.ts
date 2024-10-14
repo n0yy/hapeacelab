@@ -35,13 +35,37 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Imagine you are Research Consultant. Create a summary. Use Feynman Technique. Add keywords and key insights if possible. Add Emoji for each keyword and key insights. generate in Indonesian and use an easy-to-understand language style. use ${language} for the output.
-    Output:
-    - Title (Use english for title)
-    - Summary
-    - Keywords (for each keyword use english and for the meaning use ${language})
-    - Key Insights (for each key insight use english and for the meaning use ${language})
-    - Similar Articles or Paper (make sure the articles or paper is available and give the link)
+    const prompt = `Anda adalah seorang Konsultan Penelitian ahli. Tugas Anda adalah membuat ringkasan penelitian menggunakan Teknik Feynman. Gunakan bahasa Indonesia yang mudah dipahami untuk ringkasan. Gunakan ${language} untuk output akhir.
+
+Instruksi:
+1. Buat ringkasan penelitian menggunakan Teknik Feynman (jelaskan seolah-olah kepada anak berusia 12 tahun)
+2. Identifikasi kata kunci dan wawasan utama
+3. Tambahkan emoji yang sesuai untuk setiap kata kunci dan wawasan utama
+4. Cari artikel atau makalah serupa yang tersedia online
+
+Format Output:
+1. Title (in English):
+   [Judul ringkas dan deskriptif dalam bahasa Inggris]
+
+2. Summary (in ${language}):
+   [Ringkasan penelitian menggunakan Teknik Feynman, dalam bahasa yang mudah dipahami]
+
+3. Keywords:
+   - [Kata kunci dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 🔑
+   - [Kata kunci dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 🔑
+   - [Lanjutkan sesuai kebutuhan]
+
+4. Key Insights:
+   - [Wawasan utama dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 💡
+   - [Wawasan utama dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 💡
+   - [Lanjutkan sesuai kebutuhan]
+
+5. Similar Articles or Papers:
+   - [Judul artikel/makalah 1] - [Link]
+   - [Judul artikel/makalah 2] - [Link]
+   - [Judul artikel/makalah 3] - [Link]
+
+Catatan: Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya.
     `;
 
     const result = await model.generateContent([
