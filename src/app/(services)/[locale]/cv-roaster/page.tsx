@@ -2,7 +2,7 @@
 
 import useSWR, { mutate } from "swr";
 import UploadFile from "@/components/UploadFile";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import AsideServices from "@/components/Aside";
 import { useSession } from "next-auth/react";
@@ -11,8 +11,6 @@ import { EosIconsThreeDotsLoading } from "@/components/Loading";
 import { v4 as uuid } from "uuid";
 import { updatePoints } from "@/lib/services/firebase/users";
 import { FaPaperPlane } from "react-icons/fa";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function CVRoaster() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -30,26 +28,6 @@ export default function CVRoaster() {
   const t = useTranslations("CVRoaster");
   const tAside = useTranslations("Aside");
 
-  const { data: roasterData, error: roasterError } = useSWR(
-    file ? ["/api/services/cv-roaster", file] : null,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: 2000,
-      focusThrottleInterval: 5000,
-    }
-  );
-
-  const { data: enhancedData, error: enhancedError } = useSWR(
-    file ? ["/api/services/enhance-cv", file] : null,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: 2000,
-      focusThrottleInterval: 5000,
-    }
-  );
-
   const handleFile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -65,6 +43,11 @@ export default function CVRoaster() {
 
     if (file.type !== "application/pdf") {
       alert("Only PDF files are allowed.");
+      return;
+    }
+
+    if ((session.user as any).points < 70) {
+      alert("You do not have enough points to use this service.");
       return;
     }
 
@@ -90,6 +73,7 @@ export default function CVRoaster() {
       }
 
       const responseData = await response.json();
+      setIsStreamingFinished(false);
       setDisplayedContent(responseData.content);
       setIsEnhanced(false);
       mutate("/api/services/cv-roaster", responseData, false);
@@ -101,31 +85,37 @@ export default function CVRoaster() {
     }
   };
 
-  const handleStreamingFinished = () => {
+  const handleStreamingFinished = useCallback(() => {
     setIsStreamingFinished(true);
-  };
+  }, []);
 
   const handleEnhancePrompt = () => {
     setShowPrompt(true);
   };
 
   const handleEnhanceCV = async () => {
-    if (!roasterData?.content) {
-      alert("No CV content to enhance.");
+    if (!displayedContent) {
+      alert("No CV content to enhance. Please roast a CV first.");
+      return;
+    }
+
+    if (!additionalPrompt.trim()) {
+      alert("Please provide additional instructions for enhancing the CV.");
       return;
     }
 
     try {
-      setIsLoadingEnhance(true);
       setDisplayedContent(null);
+      setIsLoadingEnhance(true);
       setIsStreamingFinished(false);
+
       const response = await fetch("/api/services/enhance-cv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          roastedText: roasterData.content,
+          roastedText: displayedContent,
           additionalPrompt: additionalPrompt,
           uuid: id,
         }),
@@ -133,22 +123,24 @@ export default function CVRoaster() {
 
       if (!response.ok) {
         throw new Error(`Failed to enhance CV: ${response.statusText}`);
-      } else {
-        if (session?.user?.email) {
-          await updatePoints(session?.user?.email, 70);
-        }
       }
 
       const enhancedCV = await response.json();
+
+      if (session?.user?.email) {
+        await updatePoints(session.user.email, 70);
+      }
+
       setDisplayedContent(enhancedCV.content);
       setIsEnhanced(true);
       setShowPrompt(false);
       mutate("/api/services/enhance-cv", enhancedCV, false);
     } catch (error) {
       console.error("Error enhancing CV: ", error);
-      alert("Failed to enhance CV. Please try again.");
+      alert(`Failed to enhance CV: ${error}`);
     } finally {
       setIsLoadingEnhance(false);
+      setIsStreamingFinished(true);
     }
   };
 
@@ -164,7 +156,7 @@ export default function CVRoaster() {
     <>
       <title>CV Roaster</title>
       <AsideServices tAside={tAside} />
-      <main className="prose-sm text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
+      <main className="prose-sm md:prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
         <div className="mb-10">
           <h1 className="text-3xl font-bold mb-5">{t("title")}</h1>
           <p>{t("description")}</p>

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { unlink } from "fs/promises";
-import { updatePoints } from "@/lib/services/firebase/users";
 import { saveHistory } from "@/utils/firebase/history";
 import parsePDF from "@/utils/parsePdf";
 
@@ -47,36 +46,15 @@ export async function POST(req: NextRequest) {
             category: "HARM_CATEGORY_HATE_SPEECH",
             threshold: "BLOCK_NONE",
           },
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_NONE",
+          },
         ],
       }),
-      prompt: `${extractedText}
-
-      Instruksi:
-      1. Roasting CV tersebut dengan gaya bahasa:
-         - Menyinggung dan kasar
-         - Gaul (contoh: lu, gue, gk, kaga, dll)
-         - Gunakan emojis untuk memperkuat pesan 😈🔥💀
-      
-      2. Berikan skor ATS (Applicant Tracking System) secara objektif (skala 1-100)
-      
-      3. Buat judul/title dengan awalan "##" yang mencerminkan isi roasting
-      
-      4. Format output:
-         ##[Judul Roasting]
-      
-         [Isi roasting]
-      
-         Skor ATS: [Nilai]/100 🤖
-      
-         Saran (Advice):
-         - [Poin perbaikan 1]
-         - [Poin perbaikan 2]
-         - [Poin perbaikan 3]
-      
-      5. Seluruh output dalam Bahasa Indonesia`,
+      prompt: `${extractedText}\nRoasting cv tersebut menggunakan bahasa yang menyinggung, kasar dan gaul (lu, gue, gk, kaga dll), tambahin kira kira dapet skor ATS berapa (secara objektif)? tambahin juga emoji biar makin kena mental. bikin judul/title dengan prefix ##. output dalam bahasa Indonesia. diakhir tambahin Saran (Advice) apa aja yang harus diperbaiki`,
     });
 
-    await updatePoints(userEmail, 70);
     await saveHistory(userEmail, "cv-roaster", {
       content: text,
       title: text.match(/##\s*(.*?)\n/)?.[1] || "Untitled",

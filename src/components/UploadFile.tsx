@@ -89,7 +89,7 @@ export default function UploadFile({
       </div>
       <span className="text-sm text-slate-600 mt-2">{needPoints}</span>
       <input
-        className="block w-40 mx-auto py-2 bg-slate-800 text-white rounded mt-3 hover:bg-primary hover:border border-slate-700 hover:text-slate-700 transition-all duration-200"
+        className="cursor-pointer block w-40 mx-auto py-2 bg-slate-800 text-white rounded mt-3 hover:bg-primary hover:border border-slate-700 hover:text-slate-700 transition-all duration-200"
         type="submit"
         value="Go!"
       />
