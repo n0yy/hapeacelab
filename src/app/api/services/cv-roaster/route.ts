@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText } from "ai";
-import { unlink } from "fs/promises";
+import { unlink, writeFile } from "fs/promises";
 import { saveHistory } from "@/utils/firebase/history";
 import parsePDF from "@/utils/parsePdf";
+import { readFileSync } from "fs";
+import os from "os";
+import { join } from "path";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +36,8 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const extractedText = await parsePDF(buffer, file.name);
+    tempFilePath = join(os.tmpdir(), file.name);
+    await writeFile(tempFilePath, buffer);
 
     const google = createGoogleGenerativeAI({
       apiKey: process.env.GEMINI_API_KEY,
@@ -52,7 +56,22 @@ export async function POST(req: NextRequest) {
           },
         ],
       }),
-      prompt: `${extractedText}\nRoasting cv tersebut menggunakan bahasa yang menyinggung, kasar dan gaul (lu, gue, gk, kaga dll), tambahin kira kira dapet skor ATS berapa (secara objektif)? tambahin juga emoji biar makin kena mental. bikin judul/title dengan prefix ##. output dalam bahasa Indonesia. diakhir tambahin Saran (Advice) apa aja yang harus diperbaiki`,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: "Roasting cv tersebut menggunakan bahasa yang menyinggung, kasar dan gaul (lu, gue, gk, kaga dll), tambahin kira kira dapet skor ATS berapa (secara objektif)? tambahin juga emoji biar makin kena mental. bikin judul/title dengan prefix ##. output dalam bahasa Indonesia. diakhir tambahin Saran (Advice) apa aja yang harus diperbaiki",
+            },
+            {
+              type: "file",
+              data: readFileSync(tempFilePath),
+              mimeType: "application/pdf",
+            },
+          ],
+        },
+      ],
     });
 
     await saveHistory(userEmail, "cv-roaster", {

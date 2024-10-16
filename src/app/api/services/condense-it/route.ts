@@ -43,30 +43,34 @@ Instruksi:
 3. Tambahkan emoji yang sesuai untuk setiap kata kunci dan wawasan utama
 4. Cari artikel atau makalah serupa yang tersedia online
 
-Format Output:
-1. Title (in English):
-   [Judul ringkas dan deskriptif dalam bahasa Inggris]
+Format Output (dalam Markdown):
 
-2. Summary (in ${language}):
-   [Ringkasan penelitian menggunakan Teknik Feynman, dalam bahasa yang mudah dipahami]
+# [Judul ringkas dan deskriptif dalam bahasa Inggris]
 
-3. Keywords:
-   - [Kata kunci dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 🔑
-   - [Kata kunci dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 🔑
-   - [Lanjutkan sesuai kebutuhan]
+## Summary (in ${language})
 
-4. Key Insights:
-   - [Wawasan utama dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 💡
-   - [Wawasan utama dalam bahasa Inggris] (${language}: [Arti dalam ${language}]) 💡
-   - [Lanjutkan sesuai kebutuhan]
+[Ringkasan penelitian menggunakan Teknik Feynman, dalam bahasa yang mudah dipahami]
 
-5. Similar Articles or Papers:
-   - [Judul artikel/makalah 1] - [Link]
-   - [Judul artikel/makalah 2] - [Link]
-   - [Judul artikel/makalah 3] - [Link]
+## Keywords
 
-Catatan: Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya.
-    `;
+- [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
+- [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
+- [Lanjutkan sesuai kebutuhan]
+
+## Key Insights
+
+- [Wawasan utama dalam bahasa Inggris]: [Arti dalam ${language}] 💡
+- [Wawasan utama dalam bahasa Inggris]: [Arti dalam ${language}] 💡
+- [Lanjutkan sesuai kebutuhan]
+
+## Similar Articles or Papers
+contoh outputnya harus seperti: **[Judul artikel/makalah 1](Link)**
+- [Judul artikel/makalah 1](Link)
+- [Judul artikel/makalah 2](Link)
+- [Judul artikel/makalah 3](Link)
+- [Judul artikel/makalah N](Link)
+
+Catatan: Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya. Semua output harus dalam format Markdown untuk dirender menggunakan react-markdown.`;
 
     const result = await model.generateContent([
       {
@@ -85,7 +89,7 @@ Catatan: Pastikan semua artikel atau makalah yang disebutkan tersedia online dan
       content: text,
       language,
       fileName: file.name,
-      title: text.match(/##\s*(.*?)\n/)?.[1] || "Untitled",
+      title: text.match(/#\s*(.*?)\n/)?.[1] || "Untitled",
     });
 
     return NextResponse.json({ success: true, text });

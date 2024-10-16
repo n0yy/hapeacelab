@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
@@ -9,11 +9,13 @@ import "katex/dist/katex.min.css";
 interface StreamingTextProps {
   content: string;
   onStreamingComplete: () => void;
+  onStreamingUpdate: () => void;
 }
 
 export default function StreamingText({
   content,
   onStreamingComplete,
+  onStreamingUpdate,
 }: StreamingTextProps) {
   const [text, setText] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
@@ -30,7 +32,11 @@ export default function StreamingText({
     let currentIndex = 0;
     const intervalId = setInterval(() => {
       if (currentIndex < content.length) {
-        setText((prev) => prev + content[currentIndex]);
+        setText((prev) => {
+          const newText = prev + content[currentIndex];
+          onStreamingUpdate();
+          return newText;
+        });
         currentIndex++;
       } else {
         clearInterval(intervalId);
@@ -40,10 +46,10 @@ export default function StreamingText({
     }, SPEED_TYPING);
 
     return () => clearInterval(intervalId);
-  }, [content, onStreamingComplete, isStreaming]);
+  }, [content, onStreamingComplete, onStreamingUpdate, isStreaming]);
 
   return (
-    <div className="prose-sm prose-h1:text-2xl prose-h1:font-semibold prose-p:my-2 lg:prose flex flex-col mx-auto text-justify shadow-neo rounded-xl p-5 md:p-10 my-10 lg:mb-10">
+    <div className="prose-sm prose-h1:text-2xl prose-h1:font-semibold prose-p:my-2 lg:prose flex flex-col mx-auto text-justify shadow-none md:shadow-neo rounded-none md:rounded-xl p-5 md:p-10 my-10 lg:mb-10">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}

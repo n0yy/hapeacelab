@@ -118,7 +118,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
             )}
             {!historyData && <div>Loading...</div>}
             {histories.length > 0 ? (
-              <div className="space-y-0 max-h-64 overflow-y-auto">
+              <div className="space-y-0 min-h-64 overflow-y-auto">
                 {histories.map((item: History) => (
                   <ActiveLink
                     key={item.id}

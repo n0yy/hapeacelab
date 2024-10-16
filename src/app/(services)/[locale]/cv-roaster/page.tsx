@@ -24,9 +24,23 @@ export default function CVRoaster() {
   const [isStreamingFinished, setIsStreamingFinished] =
     useState<boolean>(false);
   const [isEnhanced, setIsEnhanced] = useState<boolean>(false);
+
   const { data: session } = useSession();
   const t = useTranslations("CVRoaster");
   const tAside = useTranslations("Aside");
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const streamingTextRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = useCallback(() => {
+    if (streamingTextRef.current) {
+      window.scrollTo({
+        top:
+          streamingTextRef.current.offsetTop +
+          streamingTextRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, []);
 
   const handleFile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,9 +99,20 @@ export default function CVRoaster() {
     }
   };
 
+  useEffect(() => {
+    if (displayedContent) {
+      setTimeout(scrollToBottom, 100);
+    }
+  }, [displayedContent, scrollToBottom]);
+
   const handleStreamingFinished = useCallback(() => {
     setIsStreamingFinished(true);
-  }, []);
+    scrollToBottom();
+  }, [scrollToBottom]);
+
+  const handleStreamingUpdate = useCallback(() => {
+    scrollToBottom();
+  }, [scrollToBottom]);
 
   const handleEnhancePrompt = () => {
     setShowPrompt(true);
@@ -178,11 +203,14 @@ export default function CVRoaster() {
         )}
 
         {displayedContent && (
-          <div className="mt-6">
-            <StreamingText
-              content={displayedContent}
-              onStreamingComplete={handleStreamingFinished}
-            />
+          <div className="mt-6" ref={contentRef}>
+            <div ref={streamingTextRef}>
+              <StreamingText
+                content={displayedContent}
+                onStreamingComplete={handleStreamingFinished}
+                onStreamingUpdate={handleStreamingUpdate}
+              />
+            </div>
           </div>
         )}
 
@@ -200,7 +228,7 @@ export default function CVRoaster() {
                 <textarea
                   ref={textareaRef}
                   rows={1}
-                  className="w-full px-4 py-2 min-h-[40px] max-h-[200px] border-gray-600 focus:outline-none focus:border-gray-500 pr-12 rounded-lg"
+                  className="text-sm md:text-base w-full px-4 py-2 min-h-[40px] max-h-[200px] border-gray-600 focus:outline-none focus:border-gray-500 pr-12 rounded-lg"
                   placeholder="Apa yang mau ditambahin bree?"
                   value={additionalPrompt}
                   onChange={(e) => {

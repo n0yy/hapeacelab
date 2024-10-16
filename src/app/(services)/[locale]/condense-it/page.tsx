@@ -115,13 +115,12 @@ export default function CondenseIt() {
   };
 
   if (error) return <div>Failed to load user data</div>;
-  console.log(`Content: ${content}`);
   return (
     <>
       <title>CondenseIt</title>
       <AsideServices tAside={tAside} />
       <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
-        <h1 className="text-3xl font-semibold underline mb-2">{t("title")}</h1>
+        <h1 className="text-3xl font-semibold mb-2">{t("title")}</h1>
         <p>{t("description")}</p>
         <select
           name="language"
