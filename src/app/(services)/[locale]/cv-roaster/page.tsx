@@ -83,7 +83,10 @@ export default function CVRoaster() {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to process file: ${response.statusText}`);
+        alert(`Failed to process file: ${response.statusText}`);
+        return;
+      } else {
+        await updatePoints(session.user.email, 70);
       }
 
       const responseData = await response.json();

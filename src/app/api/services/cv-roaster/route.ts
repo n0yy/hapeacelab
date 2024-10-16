@@ -3,12 +3,9 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { unlink, writeFile } from "fs/promises";
 import { saveHistory } from "@/utils/firebase/history";
-import parsePDF from "@/utils/parsePdf";
 import { readFileSync } from "fs";
 import os from "os";
 import { join } from "path";
-
-export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   let tempFilePath: string | null = null;
