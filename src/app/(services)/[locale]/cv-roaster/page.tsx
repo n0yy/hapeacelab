@@ -11,6 +11,7 @@ import { EosIconsThreeDotsLoading } from "@/components/Loading";
 import { v4 as uuid } from "uuid";
 import { updatePoints } from "@/lib/services/firebase/users";
 import { FaPaperPlane } from "react-icons/fa";
+import AlertPoints from "@/components/AlertPoints";
 
 export default function CVRoaster() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -24,6 +25,7 @@ export default function CVRoaster() {
   const [isStreamingFinished, setIsStreamingFinished] =
     useState<boolean>(false);
   const [isEnhanced, setIsEnhanced] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const t = useTranslations("CVRoaster");
@@ -61,7 +63,8 @@ export default function CVRoaster() {
     }
 
     if ((session.user as any).points < 70) {
-      alert("You do not have enough points to use this service.");
+      setShowAlert(true);
+      setFile(null);
       return;
     }
 
@@ -197,6 +200,8 @@ export default function CVRoaster() {
           needPoints={t("points")}
           isPDF
         />
+
+        {showAlert && <AlertPoints />}
 
         {(isLoading || isLoadingEnhance) && (
           <div className="text-center my-10 flex items-center justify-center space-x-1">
