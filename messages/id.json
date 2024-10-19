@@ -3,7 +3,7 @@
     "experimental": "Eksperimen",
     "greeting": "Halo {name} ✌️, ada yang bisa kita bantu hari ini?",
     "title": "AI-Powered Tools by Hapeacelab.",
-    "description": "Capek sama kerjaan yang ribet? Tenang, bre! Pake aja alat-alat canggih berbasis AI kita. Biar kita yang urus yang njlimet-njlimet, lu tinggal fokus sama hal yang emang penting. Dijamin kerjaan lu bakal lebih enteng!",
+    "description": "Dari bikin ringkasan kilat, nulis deskripsi produk otomatis, sampe ngeringkas materi kuliah, kita ada semua. Bahkan bisa bantuin upgrade CV lu jadi keren abis.",
     "services": {
       "title": "HLab Dibangun dengan Model AI yang Kuat.",
       "subtitle": "Dengan Model AI yang canggih, kita bisa dapetin hasil yang sesuai kebutuhan.",
@@ -28,22 +28,22 @@
       "title": "Pilih Paket Yang Cocok Buat Kantong Lu",
       "subtitle": "Cobain dulu yang gratis, dapet 150 poin. Kalo kurang, gampang kok nambahnya.",
       "free": {
-        "title": "Gratisan",
+        "title": "Freehatin",
         "features": [
           "Buat yang pengen coba-coba dulu.",
           "Dapet 150 poin pas daftar."
         ],
-        "price": "Gratis Coy!"
+        "price": "Rp. 0"
       },
       "lower": {
         "title": "Anak Kosan",
         "features": ["Semua fitur dasar.", "Dapet 550 poin."],
-        "price": "Cuma 25 Ribu"
+        "price": "Rp. 11.000"
       },
       "upper": {
         "title": "Anak Sultan",
         "features": ["Semua fitur bisa dipake.", "Dapet 1150 poin."],
-        "price": "49 Ribu Aja"
+        "price": "Rp. 27.000"
       }
     },
     "footer": "@ 2024 Hapeacelab"
