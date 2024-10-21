@@ -40,7 +40,7 @@ export default function DetailHistory({ params }: any) {
       <title>{history?.title}</title>
 
       <AsideServices tAside={tAside} />
-      <article className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto my-10">
+      <article className="prose-sm lg:prose text-justify max-w-3xl mx-10 md:mx-auto my-10">
         <ReactMarkdown>{history?.content}</ReactMarkdown>
       </article>
     </>

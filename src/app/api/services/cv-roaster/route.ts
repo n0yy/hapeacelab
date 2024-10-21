@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     });
 
     const { text } = await generateText({
-      model: google("gemini-1.5-pro-002", {
+      model: google("gemini-1.5-flash-002", {
         safetySettings: [
           {
             category: "HARM_CATEGORY_HATE_SPEECH",

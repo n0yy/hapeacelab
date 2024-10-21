@@ -49,7 +49,7 @@ export default function StreamingText({
   }, [content, onStreamingComplete, onStreamingUpdate, isStreaming]);
 
   return (
-    <div className="prose-sm prose-h1:text-2xl prose-h1:font-semibold prose-p:my-2 lg:prose flex flex-col mx-auto text-justify shadow-none md:shadow-neo rounded-none md:rounded-xl p-5 md:p-10 my-10 lg:mb-10">
+    <div className="prose-sm prose-h1:text-2xl prose-h1:font-semibold prose-p:my-2 lg:prose flex flex-col mx-auto shadow-none md:shadow-neo rounded-none md:rounded-xl p-5 md:p-10 my-10 lg:mb-10">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}

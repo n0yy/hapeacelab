@@ -6,12 +6,7 @@ import Link from "next/link";
 export default function AlertPoints() {
   return (
     <div className="mb-10">
-      <Alert color="failure">
-        You don't have enoght points. Please buy more points.{" "}
-        <Link href="/#pricing" className="underline">
-          Click Me
-        </Link>
-      </Alert>
+      <Alert color="failure">You don't have enoght points.</Alert>
     </div>
   );
 }
