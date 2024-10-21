@@ -91,7 +91,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
       <aside
         className={`${
           showAside ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 fixed top-0 md:left-0 max-w-72 lg:max-w-sm h-screen overflow-y-auto p-10 bg-primary flex flex-col shadow-lg transition-all duration-200`}
+        } md:translate-x-0 fixed top-0 left-0 h-full max-w-72 lg:max-w-sm p-10 bg-primary flex flex-col shadow-lg transition-all duration-200 overflow-y-auto`}
       >
         <div>
           <div className="flex items-end justify-between">
@@ -107,36 +107,35 @@ export default function AsideServices({ tAside }: { tAside: any }) {
             <Link href="/#services">{tAside("servicesText")}</Link>
             {/* <Link href="/#pricing">{tAside("pricingText")}</Link> */}
           </div>
-          <div className="mt-5 max-w-64">
-            <h3 className="text-lg mb-1 font-semibold text-slate-800">
-              {tAside("historiesText")}
-            </h3>
-            {historyError && (
+        </div>
+        <div className="mt-5 max-w-64">
+          <h3 className="text-lg mb-1 font-semibold text-slate-800">
+            {tAside("historiesText")}
+          </h3>
+          {historyError && (
+            <div className="text-sm text-slate-400">
+              Failed to load histories
+            </div>
+          )}
+          {histories.length > 0 ? (
+            <div className="space-y-0 max-h-64 overflow-y-auto">
+              {histories.map((item: History) => (
+                <ActiveLink
+                  key={item.id}
+                  href={`/${locale}/${serviceName}/${item.id}`}
+                  className="text-slate-600 block overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:bg-slate-300 p-1.5 rounded"
+                >
+                  {"> " + item.title || `History ${item.id}`}
+                </ActiveLink>
+              ))}
+            </div>
+          ) : (
+            !historyError && (
               <div className="text-sm text-slate-400">
-                Failed to load histories
+                No histories available
               </div>
-            )}
-            {!historyData && <div>Loading...</div>}
-            {histories.length > 0 ? (
-              <div className="space-y-0 min-h-64 overflow-y-auto">
-                {histories.map((item: History) => (
-                  <ActiveLink
-                    key={item.id}
-                    href={`/${locale}/${serviceName}/${item.id}`}
-                    className="text-slate-600 block overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:bg-slate-300 p-1.5 rounded"
-                  >
-                    {"> " + item.title || `History ${item.id}`}
-                  </ActiveLink>
-                ))}
-              </div>
-            ) : (
-              !historyError && (
-                <div className="text-sm text-slate-400">
-                  No histories available
-                </div>
-              )
-            )}
-          </div>
+            )
+          )}
         </div>
         <div className="mt-auto border-slate-300">
           {session ? (
