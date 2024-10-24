@@ -45,9 +45,7 @@ Instruksi:
 
 Format Output (dalam Markdown):
 
-# [Judul ringkas dan deskriptif dalam bahasa Inggris]
-
-## Summary (in ${language})
+# [Judul ringkas dan deskriptif penelitian]
 
 [Ringkasan penelitian menggunakan Teknik Feynman, dalam bahasa yang mudah dipahami]
 

@@ -68,12 +68,12 @@ export default function Home() {
               desc={t("services.lectureBrief.description")}
               url={`${locale}/lecturer-brief`}
             />
-            <Services
+            {/* <Services
               urlIcon="/potensionality.png"
               title={t("services.cvRoaster.title")}
               desc={t("services.cvRoaster.description")}
               url={`${locale}/cv-roaster`}
-            />
+            /> */}
           </div>
         </section>
         {/* End Services */}
