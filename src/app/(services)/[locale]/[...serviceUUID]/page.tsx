@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getHistory } from "@/utils/firebase/history";
-import ReactMarkdown from "react-markdown";
+import Markdown from "react-markdown";
 
 export default function DetailHistory({ params }: any) {
   const serviceName = params.serviceUUID[0];
@@ -41,7 +41,7 @@ export default function DetailHistory({ params }: any) {
 
       <AsideServices tAside={tAside} />
       <article className="prose-sm lg:prose text-justify max-w-3xl mx-10 md:mx-auto my-10">
-        <ReactMarkdown>{history?.content}</ReactMarkdown>
+        <Markdown>{history?.content}</Markdown>
       </article>
     </>
   );

@@ -35,40 +35,54 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Anda adalah seorang Konsultan Penelitian ahli. Tugas Anda adalah membuat ringkasan penelitian menggunakan Teknik Feynman. Gunakan bahasa Indonesia yang mudah dipahami untuk ringkasan. Gunakan ${language} untuk output akhir.
+    const prompt = `Anda adalah seorang Konsultan Penelitian ahli. Tugas Anda adalah membuat ringkasan penelitian. Gunakan bahasa Indonesia yang mudah dipahami untuk ringkasan. Gunakan ${language} untuk output akhir.
 
 Instruksi:
-1. Buat ringkasan penelitian menggunakan Teknik Feynman (jelaskan seolah-olah kepada anak berusia 12 tahun)
+1. Buat ringkasan penelitian:
+   - Rumusan masalah yang diteliti
+   - Tujuan penelitian
+   - Metode yang digunakan untuk menyelesaikan masalah
+   - Hasil penelitian
 2. Identifikasi kata kunci dan wawasan utama
 3. Tambahkan emoji yang sesuai untuk setiap kata kunci dan wawasan utama
 4. Cari artikel atau makalah serupa yang tersedia online
 
 Format Output (dalam Markdown):
-
 # [Judul ringkas dan deskriptif penelitian]
 
-[Ringkasan penelitian menggunakan Teknik Feynman, dalam bahasa yang mudah dipahami]
+## Ringkasan Penelitian
+### 🤔 Rumusan Masalah
+[Jelaskan masalah yang diteliti dengan bahasa sederhana]
+
+### 🎯 Tujuan Penelitian
+[Jelaskan tujuan penelitian dengan bahasa sederhana]
+
+### 🔬 Metode Penelitian
+[Jelaskan metode yang digunakan dengan bahasa sederhana]
+
+### ✨ Hasil Penelitian
+[Jelaskan hasil penelitian dengan bahasa sederhana]
 
 ## Keywords
-
 - [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
 - [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
 - [Lanjutkan sesuai kebutuhan]
 
 ## Key Insights
-
 - [Wawasan utama dalam bahasa Inggris]: [Arti dalam ${language}] 💡
 - [Wawasan utama dalam bahasa Inggris]: [Arti dalam ${language}] 💡
 - [Lanjutkan sesuai kebutuhan]
 
 ## Similar Articles or Papers
-contoh outputnya harus seperti: **[Judul artikel/makalah 1](Link)**
 - [Judul artikel/makalah 1](Link)
 - [Judul artikel/makalah 2](Link)
 - [Judul artikel/makalah 3](Link)
 - [Judul artikel/makalah N](Link)
 
-Catatan: Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya. Semua output harus dalam format Markdown untuk dirender menggunakan react-markdown.`;
+Catatan: 
+- Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya
+- Semua output harus dalam format Markdown untuk dirender menggunakan react-markdown
+- Gunakan bahasa yang mudah dipahami seperti menjelaskan kepada anak usia 12 tahun`;
 
     const result = await model.generateContent([
       {

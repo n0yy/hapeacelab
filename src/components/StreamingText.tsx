@@ -19,7 +19,7 @@ export default function StreamingText({
 }: StreamingTextProps) {
   const [text, setText] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
-  const SPEED_TYPING: number = 10;
+  const SPEED_TYPING: number = 500;
 
   useEffect(() => {
     setText("");
@@ -29,11 +29,12 @@ export default function StreamingText({
   useEffect(() => {
     if (!isStreaming) return;
 
+    const words = content.split(" ");
     let currentIndex = 0;
     const intervalId = setInterval(() => {
-      if (currentIndex < content.length) {
+      if (currentIndex < words.length) {
         setText((prev) => {
-          const newText = prev + content[currentIndex];
+          const newText = prev + (prev ? " " : "") + words[currentIndex];
           onStreamingUpdate();
           return newText;
         });
