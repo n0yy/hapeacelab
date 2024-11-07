@@ -19,7 +19,7 @@ export default function StreamingText({
 }: StreamingTextProps) {
   const [text, setText] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
-  const SPEED_TYPING: number = 500;
+  const SPEED_TYPING: number = 100;
 
   useEffect(() => {
     setText("");
@@ -50,7 +50,7 @@ export default function StreamingText({
   }, [content, onStreamingComplete, onStreamingUpdate, isStreaming]);
 
   return (
-    <div className="prose-sm prose-h1:text-2xl prose-h1:font-semibold prose-p:my-2 lg:prose flex flex-col mx-auto shadow-none md:shadow-neo rounded-none md:rounded-xl p-5 md:p-10 my-10 lg:mb-10">
+    <div className="prose-sm prose-h1:text-2xl prose-h1:font-semibold prose-p:my-2 lg:prose flex flex-col mx-auto shadow-none p-5 md:p-10 my-10 lg:mb-10 text-start">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}

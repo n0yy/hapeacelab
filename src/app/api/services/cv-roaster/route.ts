@@ -51,10 +51,6 @@ export async function POST(req: NextRequest) {
             category: "HARM_CATEGORY_HARASSMENT",
             threshold: "BLOCK_NONE",
           },
-          {
-            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-            threshold: "BLOCK_NONE",
-          },
         ],
       }),
       messages: [

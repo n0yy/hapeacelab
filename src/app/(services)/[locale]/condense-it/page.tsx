@@ -120,28 +120,32 @@ export default function CondenseIt() {
       <title>CondenseIt</title>
       <AsideServices tAside={tAside} />
       <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
-        <h1 className="text-3xl font-semibold mb-2">{t("title")}</h1>
-        <p>{t("description")}</p>
-        <select
-          name="language"
-          id="language"
-          className="w-full rounded-lg mt-3 bg-primary text-slate-800"
-          value={selectedLanguage}
-          onChange={(e) => setSelectedLanguage(e.target.value)}
-          required
-        >
-          <option value="">{t("language")}</option>
-          <option value="english">English</option>
-          <option value="indonesian">Indonesian</option>
-        </select>
-        <UploadFile
-          acceptedFile=".pdf"
-          handleSubmit={handleSubmit}
-          file={file}
-          setFile={setFile}
-          needPoints={t("points")}
-          isPDF={true}
-        />
+        {!content && (
+          <>
+            <h1 className="text-3xl font-semibold mb-2">{t("title")}</h1>
+            <p>{t("description")}</p>
+            <select
+              name="language"
+              id="language"
+              className="w-full rounded-lg mt-3 bg-primary text-slate-800"
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              required
+            >
+              <option value="">{t("language")}</option>
+              <option value="english">English</option>
+              <option value="indonesian">Indonesian</option>
+            </select>
+            <UploadFile
+              acceptedFile=".pdf"
+              handleSubmit={handleSubmit}
+              file={file}
+              setFile={setFile}
+              needPoints={t("points")}
+              isPDF={true}
+            />
+          </>
+        )}
 
         {showAlert && <AlertPoints />}
         {loadingContent && (

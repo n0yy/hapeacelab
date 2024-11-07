@@ -1,4 +1,3 @@
-import AsideServices from "@/components/Aside";
 import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider, useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
@@ -15,13 +14,16 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export default async function Layout({
-  children,
-  params: { locale },
-}: {
+export default async function Layout(props: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const params = await props.params;
+
+  const { locale } = params;
+
+  const { children } = props;
+
   let messages;
   try {
     messages = (await import(`../../../../messages/${locale}.json`)).default;

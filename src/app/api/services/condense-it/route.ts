@@ -50,18 +50,17 @@ Instruksi:
 Format Output (dalam Markdown):
 # [Judul ringkas dan deskriptif penelitian]
 
-## Ringkasan Penelitian
-### 🤔 Rumusan Masalah
-[Jelaskan masalah yang diteliti dengan bahasa sederhana]
+### 🤔 Rumusan Masalah [gunakan bahasa ${language}]
+[Jelaskan masalah yang diteliti dengan bahasa sederhana. gunakan  bahasa ${language}] 
 
-### 🎯 Tujuan Penelitian
-[Jelaskan tujuan penelitian dengan bahasa sederhana]
+### 🎯 Tujuan Penelitian [gunakan bahasa ${language}]
+[Jelaskan tujuan penelitian dengan bahasa sederhana. gunakan  bahasa ${language}]
 
-### 🔬 Metode Penelitian
-[Jelaskan metode yang digunakan dengan bahasa sederhana]
+### 🔬 Metode Penelitian [gunakan bahasa ${language}]
+[Jelaskan metode yang digunakan dengan bahasa sederhana. gunakan  bahasa ${language}]
 
-### ✨ Hasil Penelitian
-[Jelaskan hasil penelitian dengan bahasa sederhana]
+### ✨ Hasil Penelitian [gunakan bahasa ${language}]
+[Jelaskan hasil penelitian dengan bahasa sederhana. gunakan  bahasa ${language}]
 
 ## Keywords
 - [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
@@ -82,7 +81,8 @@ Format Output (dalam Markdown):
 Catatan: 
 - Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya
 - Semua output harus dalam format Markdown untuk dirender menggunakan react-markdown
-- Gunakan bahasa yang mudah dipahami seperti menjelaskan kepada anak usia 12 tahun`;
+- Gunakan bahasa yang mudah dipahami seperti menjelaskan kepada anak usia 12 tahun
+`;
 
     const result = await model.generateContent([
       {

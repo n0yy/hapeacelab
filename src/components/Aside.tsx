@@ -11,6 +11,7 @@ import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { useState } from "react";
 import { useLocale } from "next-intl";
 import ActiveLink from "./ActiveLink";
+import { useRouter } from "next/navigation";
 
 const fetcher = (url: string) =>
   fetch(url).then((res) => {
@@ -40,6 +41,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
   const pathname = usePathname();
   const locale = useLocale();
   const serviceName = pathname?.split("/")[2];
+  const router = useRouter();
 
   const { data: historyData, error: historyError } = useSWR<HistoryData>(
     session && serviceName
@@ -112,13 +114,19 @@ export default function AsideServices({ tAside }: { tAside: any }) {
           <h3 className="text-lg mb-1 font-semibold text-slate-800">
             {tAside("historiesText")}
           </h3>
+          <span
+            className="my-3 border border-dashed border-slate-800 w-full block py-1 rounded text-sm text-slate-800 text-center hover:border-none hover:text-slate-100 hover:bg-slate-800 transition-all duration-200 hover:py-2 cursor-pointer"
+            onClick={() => (window.location.href = `/${locale}/${serviceName}`)}
+          >
+            ⚡ Lagi ⚡
+          </span>
           {historyError && (
             <div className="text-sm text-slate-400">
               Failed to load histories
             </div>
           )}
           {histories.length > 0 ? (
-            <div className="space-y-0 max-h-64 overflow-y-auto">
+            <div className="space-y-0 max-h-72 2xl:max-h-96 overflow-y-auto">
               {histories.map((item: History) => (
                 <ActiveLink
                   key={item.id}

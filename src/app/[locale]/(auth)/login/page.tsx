@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Login() {
-  const t = await useTranslations("Login");
+export default function Login() {
+  const t = useTranslations("Login");
   return (
     <section className="flex min-h-screen items-center justify-center">
       <div className="scale-90 md:scale-100 w-[400px] h-[450px] bg-primary shadow-neo rounded-xl p-10">

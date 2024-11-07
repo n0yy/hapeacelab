@@ -5,7 +5,8 @@ interface Params {
   slug: string[];
 }
 
-export async function GET(req: Request, { params }: { params: Params }) {
+export async function GET(req: Request, props: { params: Promise<Params> }) {
+  const params = await props.params;
   if (params.slug.length !== 2) {
     return NextResponse.json({ status: 402, message: "Invalid URL" });
   }

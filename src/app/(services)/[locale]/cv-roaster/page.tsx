@@ -1,6 +1,6 @@
 "use client";
 
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import UploadFile from "@/components/UploadFile";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -188,18 +188,22 @@ export default function CVRoaster() {
       <title>CV Roaster</title>
       <AsideServices tAside={tAside} />
       <main className="prose-sm md:prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-5">{t("title")}</h1>
-          <p>{t("description")}</p>
-        </div>
-        <UploadFile
-          acceptedFile=".pdf"
-          handleSubmit={handleFile}
-          file={file}
-          setFile={setFile}
-          needPoints={t("points")}
-          isPDF
-        />
+        {!displayedContent && (
+          <>
+            <div className="mb-10">
+              <h1 className="text-3xl font-bold mb-5">{t("title")}</h1>
+              <p>{t("description")}</p>
+            </div>
+            <UploadFile
+              acceptedFile=".pdf"
+              handleSubmit={handleFile}
+              file={file}
+              setFile={setFile}
+              needPoints={t("points")}
+              isPDF
+            />
+          </>
+        )}
 
         {showAlert && <AlertPoints />}
 

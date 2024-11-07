@@ -109,42 +109,49 @@ export default function DescribeIt() {
       <title>DescribeIt</title>
       <AsideServices tAside={tAside} />
       <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto mt-10">
-        <h1 className="text-3xl font-semibold underline mb-2">{t("title")}</h1>
-        <p>{t("description")}</p>
-        <h5 className="text-lg mt-3">{t("warning.title")}</h5>
-        <ul className="list-disc text-sm">
-          <li>{t("warning.first")}</li>
-          <li>{t("warning.second")}</li>
-        </ul>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          placeholder={t("productName")}
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-          className="rounded-lg w-full mt-10 bg-primary"
-        />
-        <select
-          name="language"
-          id="language"
-          className="w-full rounded-lg mt-3 bg-primary text-slate-800"
-          value={selectedLanguage}
-          onChange={(e) => setSelectedLanguage(e.target.value)}
-          required
-        >
-          <option value="">{t("language")}</option>
-          <option value="english">English</option>
-          <option value="indonesian">Indonesian</option>
-        </select>
-        <UploadFile
-          acceptedFile=".png,.jpeg,.webp,.heic,.heif"
-          handleSubmit={handleSubmit}
-          file={file}
-          setFile={setFile}
-          needPoints={t("points")}
-          isPDF={false}
-        />
+        {!content && (
+          <>
+            <h1 className="text-3xl font-semibold underline mb-2">
+              {t("title")}
+            </h1>
+            <p>{t("description")}</p>
+            <h5 className="text-lg mt-3">{t("warning.title")}</h5>
+            <ul className="list-disc text-sm">
+              <li>{t("warning.first")}</li>
+              <li>{t("warning.second")}</li>
+            </ul>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder={t("productName")}
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              className="rounded-lg w-full mt-10 bg-primary"
+            />
+            <select
+              name="language"
+              id="language"
+              className="w-full rounded-lg mt-3 bg-primary text-slate-800"
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              required
+            >
+              <option value="">{t("language")}</option>
+              <option value="english">English</option>
+              <option value="indonesian">Indonesian</option>
+            </select>
+            <UploadFile
+              acceptedFile=".png,.jpeg,.webp,.heic,.heif"
+              handleSubmit={handleSubmit}
+              file={file}
+              setFile={setFile}
+              needPoints={t("points")}
+              isPDF={false}
+            />
+          </>
+        )}
+
         {showAlert && <AlertPoints />}
         {loadingContent && (
           <div className="text-center my-10 flex items-center space-x-1">
