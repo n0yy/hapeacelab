@@ -74,6 +74,14 @@ export default function Home() {
               desc={t("services.cvRoaster.description")}
               url={`${locale}/cv-roaster`}
             />
+            <Services
+              urlIcon="/potensionality.png"
+              title={"Dear HR"}
+              desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
+              illo libero voluptatibus. Odit dolorem vero vitae, vel nobis
+              voluptatem sint ipsam odio autem, amet,"
+              url={`${locale}/dear-hr`}
+            />
           </div>
         </section>
         {/* End Services */}
