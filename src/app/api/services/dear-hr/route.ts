@@ -111,15 +111,15 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    // await saveHistory(userEmail, "dear-hr", {
-    //     content: text,
-    //     title: JSON.stringify({
+    const textPreprocessed = text.replace(/```json\n|\n```/g, "").trim();
 
-    //     }),
-    //     type: "dear-hr"
-    // })
+    await saveHistory(userEmail, "dear-hr", {
+      content: textPreprocessed,
+      title: JSON.parse(textPreprocessed).indonesia.subject,
+      type: "dear-hr",
+    });
     return NextResponse.json({
-      content: text.replace(/```json\n|\n```/g, "").trim(),
+      content: textPreprocessed,
       status: 200,
     });
   } catch (error) {

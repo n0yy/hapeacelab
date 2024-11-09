@@ -71,7 +71,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
     <>
       <div
         className={`flex items-center justify-between px-10 py-4 bg-white/10 backdrop-blur fixed top-0 w-full md:hidden ${
-          showAside ? "min-h-screen bg-white" : "z-0"
+          showAside ? "min-h-screen bg-white" : "z-50"
         }`}
       >
         <Image src="/logo.png" width={82} alt="Logo" height={64} />
@@ -92,7 +92,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
 
       <aside
         className={`${
-          showAside ? "translate-x-0" : "-translate-x-full"
+          showAside ? "translate-x-0 z-30" : "-translate-x-full"
         } md:translate-x-0 fixed top-0 left-0 h-full max-w-72 lg:max-w-sm p-10 bg-primary flex flex-col shadow-lg transition-all duration-200 overflow-y-auto`}
       >
         <div>
@@ -126,7 +126,7 @@ export default function AsideServices({ tAside }: { tAside: any }) {
             </div>
           )}
           {histories.length > 0 ? (
-            <div className="space-y-0 max-h-72 2xl:max-h-96 overflow-y-auto">
+            <div className="space-y-0 max-h-[90%] md:max-h-72 2xl:max-h-96 overflow-y-auto">
               {histories.map((item: History) => (
                 <ActiveLink
                   key={item.id}

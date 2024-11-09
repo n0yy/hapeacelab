@@ -83,9 +83,9 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 py-4 w-full z-30 flex items-center justify-between lg:justify-evenly px-10 lg:px-0 transition-all duration-300 ${
+        className={`fixed top-0 py-4 w-full z-50 flex items-center justify-between lg:justify-evenly px-10 lg:px-0 transition-all duration-300 ${
           isScrolled
-            ? "bg-primary bg-opacity-25 backdrop-blur-md"
+            ? "bg-primary bg-opacity-25 backdrop-blur-md z-50"
             : "bg-transparent"
         }`}
       >

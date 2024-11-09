@@ -12,6 +12,7 @@ import { mutate } from "swr";
 import CoverLetterDisplay from "@/components/CoverLetterSection";
 import Loading from "../loading";
 import GeneratedCard from "@/components/GeneratedCard";
+import CoverLetterSkeleton from "@/components/CoverLetterSkeleton";
 
 export default function DearHR() {
   const tAside = useTranslations("Aside");
@@ -96,17 +97,23 @@ export default function DearHR() {
     <>
       <title>Dear HR</title>
       <AsideServices tAside={tAside} />
-      <main className="prose-sm md:prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
+      <main className="prose text-justify min-h-screen max-w-3xl mx-10 md:mx-auto md:mt-10 mb-10">
         {showSection && (
           <>
             <h1>Dear HR</h1>
-            <p className="-mt-10">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-              illo libero voluptatibus. Odit dolorem vero vitae, vel nobis
-              voluptatem sint ipsam odio autem, amet, temporibus neque dolor id
-              aliquid fuga corrupti! Eos possimus rerum molestias, corporis
-              neque quod recusandae cupiditate laboriosam, aliquam quo, unde
-              maiores! Minus quis ducimus sit! Exercitationem.
+            <p className="-mt-5 mb-10">
+              Dear HR adalah fitur dari HLab yang bikin cover letter jadi
+              gampang banget. Lu tinggal masukin{" "}
+              <span className="font-semibold underline">
+                Job Description sama CV (Resume)
+              </span>{" "}
+              lu, dan fitur ini{" "}
+              <span className="font-semibold underline">
+                bakal nyusun cover letter yang sesuai
+              </span>
+              , biar cocok sama posisi yang lu incar. Nggak perlu pusing mikirin
+              kata-kata formal lagi, Dear HR bantu lu dapet kesan pertama yang
+              profesional dan tepat sasaran!
             </p>
             <div>
               <textarea
@@ -130,7 +137,7 @@ export default function DearHR() {
         )}
 
         {showAlert && <AlertPoints />}
-        {isLoading && <Loading />}
+        {isLoading && <CoverLetterSkeleton />}
         {error && (
           <div className="bg-red-50 text-red-600 p-4 rounded-lg mt-4">
             {error}
@@ -144,9 +151,7 @@ export default function DearHR() {
         )}
 
         {displayedContent && !error && (
-          <div className="relative">
-            <CoverLetterDisplay content={displayedContent} />
-          </div>
+          <CoverLetterDisplay content={displayedContent} />
         )}
       </main>
     </>

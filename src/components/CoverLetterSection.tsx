@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface CoverLetterData {
   subject: string;
@@ -23,35 +23,22 @@ interface CoverLetterSectionProps {
   language: string;
 }
 
-const Butterfly: React.FC = () => (
-  <svg
-    viewBox="0 0 50 50"
-    className="w-6 h-6 inline-block ml-2 text-purple-500 animate-flutter"
-    style={{ transform: "rotate(-10deg)" }}
-  >
-    <path
-      d="M25 25 C15 15, 5 15, 5 25 C5 35, 15 35, 25 25 C35 35, 45 35, 45 25 C45 15, 35 15, 25 25"
-      fill="currentColor"
-    />
-  </svg>
-);
-
 const CoverLetterSection: React.FC<CoverLetterSectionProps> = ({
   data,
   language,
 }) => {
   return (
-    <div className="flex-1 p-6 relative overflow-hidden animate-fadeIn">
+    <div className="w-full max-w-3xl mx-auto p-0 md:p-6 relative overflow-hidden animate-fadeIn">
       <div className="space-y-4">
-        <h3 className="text-xl font-medium">{data.subject}</h3>
+        <h3 className="text-2xl font-medium">{data.subject}</h3>
 
-        <p className="font-medium text-gray-700 hover:text-purple-700 transition-colors duration-300">
+        <i className="font-medium text-gray-700 hover:text-purple-700 transition-colors duration-300">
           {data.salutation}
-        </p>
+        </i>
 
-        <p className="text-gray-600">{data.opening_paragraph}</p>
+        <p className="text-gray-600 text-start">{data.opening_paragraph}</p>
 
-        <div className="space-y-4">
+        <div className="space-y-4 text-start">
           {data.body_paragraphs.map((paragraph, index) => (
             <p key={index} className="text-gray-600">
               {paragraph}
@@ -59,25 +46,66 @@ const CoverLetterSection: React.FC<CoverLetterSectionProps> = ({
           ))}
         </div>
 
-        <p className="text-gray-700">{data.closing_paragraph}</p>
+        <p className="text-gray-700 text-start">{data.closing_paragraph}</p>
 
-        <p className="font-medium text-purple-700 hover:scale-105 transition-transform duration-300 cursor-default">
+        <i className="text-gray-600 cursor-default mt-10 block">
           {data.signature}
-        </p>
+        </i>
       </div>
     </div>
   );
 };
 
+const LanguageToggle: React.FC<{
+  language: string;
+  onToggle: () => void;
+}> = ({ language, onToggle }) => (
+  <div className="flex justify-center mb-0">
+    <div className="bg-gray-100 rounded-lg p-1 inline-flex">
+      <button
+        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+          language === "indonesia"
+            ? "bg-white shadow-sm text-purple-700"
+            : "text-gray-500 hover:text-gray-700"
+        }`}
+        onClick={() => language === "english" && onToggle()}
+      >
+        Bahasa Indonesia
+      </button>
+      <button
+        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+          language === "english"
+            ? "bg-white shadow-sm text-purple-700"
+            : "text-gray-500 hover:text-gray-700"
+        }`}
+        onClick={() => language === "indonesia" && onToggle()}
+      >
+        English
+      </button>
+    </div>
+  </div>
+);
+
 const CoverLetterDisplay: React.FC<CoverLetterDisplayProps> = ({ content }) => {
+  const [language, setLanguage] = useState<"indonesia" | "english">(
+    "indonesia"
+  );
+
   try {
-    const { indonesia, english }: CoverLetterContent = JSON.parse(content);
+    const parsedContent: CoverLetterContent = JSON.parse(content);
+
+    const toggleLanguage = () => {
+      setLanguage((prev) => (prev === "indonesia" ? "english" : "indonesia"));
+    };
 
     return (
-      <div className="animate-slideUp">
-        <div className="w-full flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-gray-200">
-          <CoverLetterSection data={indonesia} language="Bahasa Indonesia" />
-          {/* <CoverLetterSection data={english} language="English" /> */}
+      <div className="animate-slideUp z-0">
+        <LanguageToggle language={language} onToggle={toggleLanguage} />
+        <div className="transition-all duration-300 ease-in-out">
+          <CoverLetterSection
+            data={parsedContent[language]}
+            language={language === "indonesia" ? "Bahasa Indonesia" : "English"}
+          />
         </div>
       </div>
     );

@@ -77,9 +77,7 @@ export default function Home() {
             <Services
               urlIcon="/potensionality.png"
               title={"Dear HR"}
-              desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-              illo libero voluptatibus. Odit dolorem vero vitae, vel nobis
-              voluptatem sint ipsam odio autem, amet,"
+              desc="Dear HR adalah fitur dari HLab yang bikin cover letter jadi gampang banget. Lu tinggal masukin Job Description sama CV (Resume) lu, dan fitur ini bakal nyusun cover letter yang sesuai, biar cocok sama posisi yang lu incar. Nggak perlu pusing mikirin kata-kata formal lagi, Dear HR bantu lu dapet kesan pertama yang profesional dan tepat sasaran!"
               url={`${locale}/dear-hr`}
             />
           </div>
