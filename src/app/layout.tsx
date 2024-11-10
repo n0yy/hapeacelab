@@ -17,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} bg-primary min-h-screen`}>
+      <body
+        className={`${poppins.className} bg-primary min-h-screen`}
+        style={{ overflow: "auto" }}
+      >
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

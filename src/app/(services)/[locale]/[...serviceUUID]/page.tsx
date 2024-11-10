@@ -40,7 +40,7 @@ export default function DetailHistory(props: any) {
 
       fetchHistory();
     }
-  }, [serviceName, session?.user?.email, status, uuid]);
+  }, []);
 
   return (
     <>

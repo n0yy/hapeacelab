@@ -93,85 +93,104 @@ export default function AsideServices({ tAside }: { tAside: any }) {
       <aside
         className={`${
           showAside ? "translate-x-0 z-30" : "-translate-x-full"
-        } md:translate-x-0 fixed top-0 left-0 h-full max-w-72 lg:max-w-sm p-10 bg-primary flex flex-col shadow-lg transition-all duration-200 overflow-y-auto`}
+        } md:translate-x-0 fixed top-0 left-0 h-screen w-64 bg-primary shadow-lg transition-all duration-200`}
       >
-        <div>
-          <div className="flex items-end justify-between">
-            <Image src="/logo.png" width={82} alt="Logo" height={64} />
-            {session && (
-              <span className="flex items-center text-sm text-center mt-3">
-                <LuCoins /> {(session?.user as User).points}
-              </span>
+        {/* Main container */}
+        <div className="flex flex-col h-full">
+          {/* Top Section with padding */}
+          <div className="p-5">
+            <div className="flex items-center justify-between">
+              <div className="text-xl font-bold">HLab.</div>
+              <div className="flex items-center gap-2">
+                {session && (
+                  <span className="flex items-center text-xs">
+                    <LuCoins className="w-4 h-4" />
+                    {(session?.user as User).points}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="mt-4 space-y-1 text-sm">
+              <Link href="/" className="block">
+                Beranda
+              </Link>
+              <Link href="/#services" className="block">
+                Layanan
+              </Link>
+            </div>
+          </div>
+
+          {/* History Section */}
+          <div className="flex-1 flex flex-col min-h-0 px-5">
+            <h3 className="text-sm font-medium mb-2">Riwayat</h3>
+
+            {/* "Lagi" Button */}
+            <button
+              onClick={() =>
+                (window.location.href = `/${locale}/${serviceName}`)
+              }
+              className="w-full py-1.5 px-2 text-xs border border-slate-400 border-dashed rounded mb-2 hover:bg-slate-100 transition-colors"
+            >
+              ⚡ Lagi ⚡
+            </button>
+
+            {/* Scrollable History List */}
+            <div className="flex-1 overflow-y-auto">
+              {historyError ? (
+                <div className="text-xs text-slate-400">
+                  Failed to load histories
+                </div>
+              ) : histories.length > 0 ? (
+                <div className="space-y-0.5">
+                  {histories.map((item: History) => (
+                    <ActiveLink
+                      key={item.id}
+                      href={`/${locale}/${serviceName}/${item.id}`}
+                      className="text-xs block py-1 px-2 hover:bg-slate-100 rounded truncate"
+                    >
+                      {"> " + item.title || `History ${item.id}`}
+                    </ActiveLink>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-xs text-slate-400">
+                  No histories available
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Footer Section - Profile & Logout */}
+          <div className="p-4 border-t border-slate-200">
+            {session ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Avvvatars value={session.user?.email as string} size={24} />
+                  <div>
+                    <p className="text-xs font-medium">{session?.user?.name}</p>
+                    <p className="text-xs text-slate-500">
+                      {session?.user?.email}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => signOut()}
+                  className="text-xs text-slate-600 hover:underline w-full text-left"
+                >
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-xs block text-center border border-slate-800 px-4 py-1 rounded hover:bg-slate-800 hover:text-white transition-colors"
+              >
+                Login
+              </Link>
             )}
           </div>
-          <div className="mt-7 flex flex-col space-y-1">
-            <Link href="/">{tAside("homeText")}</Link>
-            <Link href="/#services">{tAside("servicesText")}</Link>
-            {/* <Link href="/#pricing">{tAside("pricingText")}</Link> */}
-          </div>
-        </div>
-        <div className="mt-5 max-w-64">
-          <h3 className="text-lg mb-1 font-semibold text-slate-800">
-            {tAside("historiesText")}
-          </h3>
-          <span
-            className="my-3 border border-dashed border-slate-800 w-full block py-1 rounded text-sm text-slate-800 text-center hover:border-none hover:text-slate-100 hover:bg-slate-800 transition-all duration-200 hover:py-2 cursor-pointer"
-            onClick={() => (window.location.href = `/${locale}/${serviceName}`)}
-          >
-            ⚡ Lagi ⚡
-          </span>
-          {historyError && (
-            <div className="text-sm text-slate-400">
-              Failed to load histories
-            </div>
-          )}
-          {histories.length > 0 ? (
-            <div className="space-y-0 max-h-[90%] md:max-h-72 2xl:max-h-96 overflow-y-auto">
-              {histories.map((item: History) => (
-                <ActiveLink
-                  key={item.id}
-                  href={`/${locale}/${serviceName}/${item.id}`}
-                  className="text-slate-600 block overflow-hidden text-ellipsis whitespace-nowrap text-sm hover:bg-slate-300 p-1.5 rounded"
-                >
-                  {"> " + item.title || `History ${item.id}`}
-                </ActiveLink>
-              ))}
-            </div>
-          ) : (
-            !historyError && (
-              <div className="text-sm text-slate-400">
-                No histories available
-              </div>
-            )
-          )}
-        </div>
-        <div className="mt-auto border-slate-300">
-          {session ? (
-            <>
-              <div className="flex items-center">
-                <Avvvatars value={session.user?.email as string} size={36} />
-                <div className="ml-2 -space-y-1">
-                  <p className="text-sm lg:text-base">{session?.user?.name}</p>
-                  <p className="text-slate-500 text-xs lg:text-sm">
-                    {session?.user?.email}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => signOut()}
-                className="w-full text-end underline mt-2"
-              >
-                Log out
-              </button>
-            </>
-          ) : (
-            <Link
-              href="/login"
-              className="border border-slate-800 px-8 py-1.5 rounded-md font-medium scale-90 hover:bg-black hover:text-white transition-all duration-200"
-            >
-              Login
-            </Link>
-          )}
         </div>
       </aside>
     </>
