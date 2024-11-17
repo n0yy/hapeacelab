@@ -22,6 +22,10 @@
       "cvRoaster": {
         "title": "CV Roaster",
         "description": "Bikin CV lu makin keren dan siap tempur buat ngelamar kerja."
+      },
+      "dearHR": {
+        "title": "Dear HR",
+        "description": "Bikin Cover Letter otomatis sesuai Job Description sama Resume lu."
       }
     },
     "pricing": {

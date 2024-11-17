@@ -21,7 +21,11 @@
       },
       "cvRoaster": {
         "title": "CV Roaster",
-        "description": "lorem ipsum dolor sit amet consectetur. Sollicitudin gravida tellus id nullam cum."
+        "description": "It will roast your CV, providing feedback on areas for improvement, helping you refine your CV for better job prospects."
+      },
+      "dearHR": {
+        "title": "Dear HR",
+        "description": "Just pop in your Job Description and CV (Resume), and this feature will whip up a matching cover letter that fits perfectly with the position you're gunning for"
       }
     },
     "pricing": {
