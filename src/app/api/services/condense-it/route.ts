@@ -35,53 +35,50 @@ export async function POST(request: NextRequest) {
       displayName: file.name,
     });
 
-    const prompt = `Anda adalah seorang Konsultan Penelitian ahli. Tugas Anda adalah membuat ringkasan penelitian. Gunakan bahasa Indonesia yang mudah dipahami untuk ringkasan. Gunakan ${language} untuk output akhir.
+    const prompt = `Anda adalah seorang Konsultan Penelitian ahli. Tugas Anda adalah membuat ringkasan penelitian dalam bahasa ${language}.
 
 Instruksi:
-1. Buat ringkasan penelitian:
+1. Buat ringkasan penelitian dalam bahasa ${language}:
    - Rumusan masalah yang diteliti
    - Tujuan penelitian
    - Metode yang digunakan untuk menyelesaikan masalah
    - Hasil penelitian
-2. Identifikasi kata kunci dan wawasan utama
+2. Identifikasi kata kunci dan wawasan utama dalam bahasa ${language}
 3. Tambahkan emoji yang sesuai untuk setiap kata kunci dan wawasan utama
 4. Cari artikel atau makalah serupa yang tersedia online
 
 Format Output (dalam Markdown):
 # [Judul ringkas dan deskriptif penelitian]
 
-### 🤔 Rumusan Masalah [gunakan bahasa ${language}]
-[Jelaskan masalah yang diteliti dengan bahasa sederhana. gunakan  bahasa ${language}] 
+### 🤔 Rumusan Masalah
+[Jelaskan masalah yang diteliti dengan bahasa ${language} yang sederhana dan mudah dipahami]
 
-### 🎯 Tujuan Penelitian [gunakan bahasa ${language}]
-[Jelaskan tujuan penelitian dengan bahasa sederhana. gunakan  bahasa ${language}]
+### 🎯 Tujuan Penelitian
+[Jelaskan tujuan penelitian dengan bahasa ${language} yang jelas dan langsung]
 
-### 🔬 Metode Penelitian [gunakan bahasa ${language}]
-[Jelaskan metode yang digunakan dengan bahasa sederhana. gunakan  bahasa ${language}]
+### 🔬 Metode Penelitian
+[Jelaskan metode yang digunakan dengan bahasa ${language} yang sistematis]
 
-### ✨ Hasil Penelitian [gunakan bahasa ${language}]
-[Jelaskan hasil penelitian dengan bahasa sederhana. gunakan  bahasa ${language}]
+### ✨ Hasil Penelitian
+[Paparkan hasil penelitian dengan bahasa ${language} yang mudah dimengerti]
 
-## Keywords
-- [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
-- [Kata kunci dalam bahasa Inggris]: [Arti dalam ${language}] 🔑
+## Kata Kunci
+- [Kata kunci dalam bahasa Inggris]: [Arti dalam bahasa ${language}] 🔑
 - [Lanjutkan sesuai kebutuhan]
 
-## Key Insights
-- [Wawasan utama dalam bahasa Inggris]: [Arti dalam ${language}] 💡
-- [Wawasan utama dalam bahasa Inggris]: [Arti dalam ${language}] 💡
+## Wawasan Utama
+- [Wawasan utama dalam bahasa Inggris]: [Arti dalam bahasa ${language}] 💡
 - [Lanjutkan sesuai kebutuhan]
 
-## Similar Articles or Papers
+## Artikel atau Makalah Serupa
 - [Judul artikel/makalah 1](Link)
-- [Judul artikel/makalah 2](Link)
-- [Judul artikel/makalah 3](Link)
-- [Judul artikel/makalah N](Link)
+- [Lanjutkan sesuai kebutuhan]
 
-Catatan: 
-- Pastikan semua artikel atau makalah yang disebutkan tersedia online dan berikan tautan langsung ke sumbernya
-- Semua output harus dalam format Markdown untuk dirender menggunakan react-markdown
-- Gunakan bahasa yang mudah dipahami seperti menjelaskan kepada anak usia 12 tahun
+Catatan Penting:
+- Seluruh output menggunakan bahasa ${language}
+- Gunakan bahasa yang sederhana dan mudah dipahami, seolah menjelaskan kepada anak usia 12 tahun
+- Pastikan artikel/makalah yang disebutkan tersedia online dengan tautan langsung
+- Format dalam Markdown untuk rendering react-markdown
 `;
 
     const result = await model.generateContent([
